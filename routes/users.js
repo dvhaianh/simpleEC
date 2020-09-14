@@ -14,7 +14,7 @@ router.get('/find', authentication, ctrl.finding);
 //Add
 router.post('/register', ctrl.register);
 
-//Edit
+//Edit  
 router.post('/ChangeInformation/:username', authentication, ctrl.changeInfor);
 
 router.post('/ChangePassword/:username', authentication, ctrl.changePwd);

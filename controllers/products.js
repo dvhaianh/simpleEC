@@ -4,7 +4,7 @@ module.exports.listing = async (req, res) => {
     try {
         const Products = await products.listing();
         res.json({
-            message: `All accounts here`,
+            message: `Success`,
             amount: Products.length,
             data: Products
         });
@@ -64,9 +64,10 @@ module.exports.adding = async (req, res) => {
             return;
         } else {
             await products.adding(infor);
+            const product = await products.finding(infor.productID);
             res.json({
                 message: `A new product is added`,
-                data: infor
+                data: product
             });
             return;
         }
@@ -94,9 +95,10 @@ module.exports.editing = async (req, res) => {
     try {
         if(await products.finding(productID)){
             await products.editing(productID, infor);
+            const product = await products.finding(productID);
             res.json({
                 message: `Update product ${productID} successfully`,
-                data: infor
+                data: product
             });
             return;
         } else {
@@ -125,7 +127,7 @@ module.exports.deleting = async (req, res) => {
         if(await products.finding(productID)){
             await products.delete(productID);
             res.json({
-                message: `Delete product sucessfully`
+                message: `Success`
             });
             return;
         } else {

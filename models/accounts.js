@@ -63,6 +63,7 @@ module.exports.register = acc => {
         email: acc.email,
     });
     newAcc.save();
+    return acc;
 }
 
 //Edit

@@ -52,7 +52,7 @@ module.exports.listing = async (req, res) => {
     try {
         const listAcc = await accs.listing();
         res.json({
-            message: `All accounts here`,
+            message: `Success`,
             amount: listAcc.length,
             data: listAcc
         });
@@ -83,7 +83,6 @@ module.exports.finding = async (req, res) => {
         } else {
             res.json({
                 message: `Success`,
-                amount: acc.length,
                 data: acc
             });
             return;
@@ -121,10 +120,10 @@ module.exports.register = async (req, res) => {
             });
             return;
         }
-        await accs.register(acc);
+        const account = await accs.register(acc);
         res.json({
             message: `Success`,
-            data: acc
+            data: account
         });
         return;
     } catch (error) {
@@ -154,12 +153,10 @@ module.exports.changeInfor = async (req, res) => {
                 return;
             } else {
                 await accs.changeInfo(username, {fullname, email});
+                const acc = await accs.finding(username);
                 res.json({
                     message: `Success`,
-                    data: {
-                        fullname,
-                        email
-                    }
+                    data: acc
                 });
                 return;
             }
