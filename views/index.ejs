@@ -1,11 +1,45 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <div>
-      <img src="/images/bike.PNG" width="200px"></div>
-  </body>
-</html>
+<%include top%>
+
+<div id='header'>
+    <a href="/users/login">Login</a>
+    |
+    <a href="/users/register">Register</a>
+</div>
+<br><br>
+<div>
+    <form action="/products/find" method="GET">
+        <input type="text" name="infor" list="products" placeholder="Find by name, id">
+        <datalist id="products">
+        <%
+        data.forEach(p => {
+            %><option value="<%= p.productID%>"></option>
+            <option value="<%= p.productName%>"></option><%
+        })
+        %>
+        </datalist>
+        <input type="submit" value="Find">
+    </form>
+</div>
+<br><br>
+<div>
+<%
+data.forEach(p => {
+%>
+    <form action="" style="height:160px">
+        <div style="width:20%; float: left;">
+            <img src="<%= p.image%>" style="width:100%; height: 150px;">
+        </div>
+        <div style="width:30%; float: left;">
+            <p>Product Name: <%= p.productName%></p>
+            <p>Price: <%= p.price%></p>
+            <input type="hidden" name="productID" value="<%= p.productID%>">
+            <input type="number" name="quantity" id="quantity" style="width:60px">
+            <input type="submit" value="Add to cart">
+        </div>
+    </form>
+    <br><%
+})
+%>
+</div>
+
+<%include bot%>

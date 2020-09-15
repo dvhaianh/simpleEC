@@ -1,4 +1,15 @@
 const orders = require('../models/orders');
+const products = require('../models/products');
+
+async function moneyCaculate(orderdetail) {
+    let res = 0;
+    for(let index in orderdetail) {
+        const quantity = orderdetail[index].quantity;
+        const price = await products.getPrice(orderdetail[index].productID);
+        res += price * quantity;
+    }
+    return res;
+}
 
 module.exports.listing = async (req, res) => {
     if(req.User.auth !== "admin"){
@@ -107,12 +118,8 @@ module.exports.findMine = async (req, res) => {
 
 module.exports.adding = async (req, res) => {
     const username = req.User.user;
-    const {orderID, orderdetail, money} = req.body;
-    const infor = {
-        orderID,
-        orderdetail: JSON.parse(orderdetail),
-         money
-    }
+    const orderID = req.body.orderID,
+          orderdetail = JSON.parse(req.body.orderdetail);
     try {
         if(await orders.finding(orderID)){
             res.json({
@@ -120,6 +127,12 @@ module.exports.adding = async (req, res) => {
             });
             return;
         } else {
+            const money = await moneyCaculate(orderdetail);
+            const infor = {
+                orderID,
+                orderdetail,
+                money
+            };
             await orders.ordering(username, infor);
             res.json({
                 message: 'success',

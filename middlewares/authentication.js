@@ -13,6 +13,6 @@ module.exports = async (req, res, next) => {
     req.User = {
         user: decode.username,
         auth: decode.authorization
-    }
+    };
     next();
 };

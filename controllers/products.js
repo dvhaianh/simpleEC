@@ -3,9 +3,8 @@ const products = require('../models/products');
 module.exports.listing = async (req, res) => {
     try {
         const Products = await products.listing();
-        res.json({
-            message: `Success`,
-            amount: Products.length,
+        res.render('index', {
+            title: "Demo",
             data: Products
         });
         return;

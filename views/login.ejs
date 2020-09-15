@@ -1,0 +1,21 @@
+<%include top%>
+    <div>
+      <form action="/users/login" method="POST">
+        <h2>LOGIN</h3>
+        <div>
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username">
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password">
+        </div>
+        <input type="Submit" value="Login">
+      </form>
+    </div>
+    <div>
+      <a href="">Register</a>
+      |
+      <a href="">Forgot Password?</a>
+    </div>
+<%include bot%>

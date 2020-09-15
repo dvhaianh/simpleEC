@@ -18,14 +18,23 @@ module.exports.login = async (req, res) => {
                 });
                 return;
             } else {
-                const token = jwt.sign({
-                    username,
-                    authorization: account[0].authorization
-                }, process.env.JWT_SECRET);
-                res.json({
-                    message: `Success`,
-                    token
-                });
+                // const token = jwt.sign({
+                //     username,
+                //     authorization: account[0].authorization
+                // }, process.env.JWT_SECRET);
+                // res.json({
+                //     message: `Success`,
+                //     token
+                // });
+                if(account[0].authorization === "admin"){
+                    res.render('admin', {
+                        title: "Admin"
+                    });
+                } else {
+                    res.render('users', {
+                        title: "User"
+                    });
+                }
                 return;
             }
         } else {

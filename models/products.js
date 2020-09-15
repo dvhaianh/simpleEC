@@ -24,7 +24,7 @@ const products = mongoose.model('products', PRODUCT, 'products');
 module.exports.listing = () => {
     return products
         .find()
-        .sort("productID")
+        .sort("productName")
         .then(doc => {
             return doc;
         });
@@ -33,7 +33,10 @@ module.exports.listing = () => {
 //Find
 module.exports.finding = input => {
     return products
-        .find({$or: [{productID: input}, {productName: input}]})
+        .find({$or: [
+            {productID: input},
+            {productName: input}
+        ]})
         .then(doc => {
             if(doc.length > 0) return doc;
         });
@@ -65,4 +68,11 @@ module.exports.editing = (productID, infor) => {
 //Delete
 module.exports.delete = productID => {
     products.findOneAndDelete({productID}).exec();
+}
+
+module.exports.getPrice = productID => {
+    return products.findOne({productID})
+        .then(doc => {
+            if(doc) return doc.price;
+        });
 }
