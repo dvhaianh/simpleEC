@@ -1,0 +1,31 @@
+<%include top%>
+
+<div class="container text-center"><div class="row">
+    <div class="col-sm-8"><p>
+        <h2>All users (<%= data.length%>)</h2>
+    </p></div>
+    <form action="" method="" class="col-sm-4">
+        <br>
+        <input type="text" name="infor">
+        <input type="submit" value="Find">
+    </form>
+</div><hr></div>
+<ol><div class="container"><div class="row">
+<% data.forEach(a => { %>
+    <li class="col-sm-4">
+        <p><a href="/admin/readUser?username=<%= a.username%>"><%= a.username%></a></p>
+        <p>Fullname: <%= a.fullname%></p>
+        <p>Email: <%= a.email%></p>
+        <% if(a.authorization !== "admin"){ %>
+        <form action="" class="">
+            <input type="hidden" name="username" value="<%= a.username%>">
+            <input type="submit" value="Delete">
+        </form>
+        <% } %>
+        <hr style="width: 70%;">
+    </li>
+    <hr>
+<% }) %>
+</div></div></ol>
+
+<%include bot%>

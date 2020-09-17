@@ -3,27 +3,25 @@ const ctrl = require('../controllers/orders');
 
 const validation = require('../middlewares/validation');
 
-//List
-router.get('/', ctrl.listing);
+// //List
+// router.get('/', ctrl.listing);
 
 router.get('/myOrders', ctrl.myListing);
 
-//Find
-router.get('/find', ctrl.finding);
+// //Find
+// router.get('/find', ctrl.finding);
 
-router.get('/findMine', ctrl.findMine);
+router.get('/readOrder', ctrl.reading)
 
-//Add
+// //Add
 router.post('/buy', validation.order, ctrl.adding);
 
-//Edit
-router.post('/edit/:orderID', ctrl.editing);
+// //Edit
+// router.post('/cancel/:orderID', ctrl.cancel);
 
-router.post('/cancel/:orderID', ctrl.cancel);
+// router.post('/status/:orderID', ctrl.status);
 
-router.post('/status/:orderID', ctrl.status);
-
-//Delete
-router.delete('/:orderID', ctrl.delete);
+// //Delete
+// router.delete('/:orderID', ctrl.delete);
 
 module.exports = router;

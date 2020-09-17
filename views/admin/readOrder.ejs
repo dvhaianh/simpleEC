@@ -1,0 +1,23 @@
+<%include top%>
+
+<div>
+    <p><b>Order ID:</b> <%= data.orderID%></p>
+    <p><b>Username:</b> <%= data.username%></p>
+    <p><b>Status:</b> <%=data.status%></p>
+    <p><b>Total money:</b> <%= data.money%></p>
+    <p><b>Order detail:</b></p>
+        <ul>
+        <%
+        const od = data.orderdetail;
+        od.forEach(o => {
+        %>
+            <li>
+                <p><i>Product ID:</i> <%= o.productID%></p>
+                <p><i>Price:</i> <%= o.price%></p>
+                <p><i>Quantity:</i> <%= o.quantity%></p>
+            </li>
+        <% }) %>
+        </ul>
+</div>
+
+<%include bot%>

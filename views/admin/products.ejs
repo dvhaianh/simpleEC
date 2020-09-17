@@ -1,0 +1,34 @@
+<%include top%>
+
+<div class="container text-center"><div class="row">
+    <div class="col-sm-8"><p>
+        <h2>All products (<%= data.length%>)</h2>
+        <a href="">Add more</a>
+    </p></div>
+    <form action="/find" method="GET" class="col-sm-4">
+        <br>
+        <input type="text" name="infor">
+        <input type="submit" value="Find">
+    </form>
+</div><hr></div>
+<ol>
+<div class="container"><div class="row">
+<% data.forEach(p => { %>
+    <li class="col-sm-6">
+        <div class="container"><div class="row">
+            <div class="col-sm-6">
+                <p><b>Product ID:</b> <%=p.productID%></p>
+                <p><b>Product Name:</b> <%= p.productName%></p>
+                <p><b>Price:</b> <%= p.price%></p>
+            </div>
+            <div class="col-sm-6 text-center">
+                <img src="<%= p.image%>">
+            </div>
+        </div></div>
+        <hr>
+    </li>
+<% }) %>
+</div></div>
+</ol>
+
+<%include bot%>

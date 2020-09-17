@@ -1,0 +1,108 @@
+<%include top%>
+
+<div class="container">
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div id="find" class="text-center col-sm-8">
+        <form action="/find" method="GET">
+            <input type="text" name="infor" list="products" placeholder="Find by name, id" style="width: 50%;">
+            <datalist id="products">
+            <% Products.forEach(p => { %>
+                <option value="<%= p.productName%>"></option>
+            <% }) %>
+            <% Products.forEach(p => { %>
+                <option value="<%= p.productID%>"><%= p.productName%></option>
+            <% }) %>
+            </datalist>
+            <input type="submit" value="Find">
+        </form>
+    </div>
+    <div class="col-sm-2"></div>
+</div>
+<hr>
+</div>
+<br>
+
+<div class="container">
+<div class="row">
+<!--List Product-->
+    <div id="left" class="col-sm-8">
+    <div class="container">
+        <h2 class="text-center">Products</h2>
+        <hr>
+    <div class="row">
+    <% data.forEach(p => { %>
+        <div class="col-sm-4 text-center">
+            <form action="/addToCart" method="POST">
+                <br>
+                <div>
+                    <img src="<%= p.image%>">
+                </div>
+                <div>
+                    <p><b>Product Name:</b> <%= p.productName%></p>
+                    <p><b>Price:</b> <%= p.price%></p>
+                    <input type="hidden" name="productName" value="<%= p.productName%>">
+                    <input type="hidden" name="image" value="<%= p.image%>">
+                    <input type="hidden" name="productID" value="<%= p.productID%>">
+                    <input type="hidden" name="price" value="<%= p.price%>">
+                    <input type="number" name="quantity" id="quantity" style="width:60px">
+                    <input type="submit" value="Add to cart">
+                </div>
+            </form>
+            <hr/>
+        </div>
+    <% }) %>
+    </div>
+    </div>
+    </div>
+<!--Shopping Cart-->
+    <div id="right" class="col-sm-4 border-primary">
+    <div class="container">
+        <h2 class="text-center">Shopping cart (<%= cart.length%>)</h2>
+        <%
+        let orderdetail = [];
+        cart.forEach(o => {
+            orderdetail.push({
+                productID: o.productID,
+                price: o.price,
+                quantity: o.quantity
+            });
+        })
+        %>
+        <form action="/users/buy" method="POST">
+            <input type="hidden" name="orderdetail" value="<%= JSON.stringify(orderdetail)%>">
+            <input type="submit" value="Buy">
+        </form>
+        <hr>
+    <div class="row">
+    <% cart.forEach(o => { %>
+        <div class="text-center col-sm-12">
+        <div class="container">
+        <div class="row">
+            <br>
+            <div class="col-sm-6">
+                <p><b>ProductID:</b> <%= o.productID%></p>
+                <p><b>Product Name:</b> <%= o.productName%></p>
+                <p><b>Price:</b> <%= o.price%></p>
+                <p><b>Quantity:</b> <%= o.quantity%></p>
+            </div>
+            <div class="col-sm-6">
+                <img src="<%= o.image%>">
+                <br><br><br>
+                <form action="/removeFromCart" method="POST">
+                    <input type="hidden" name="productID" value="<%= o.productID%>">
+                    <input type="submit" value="Remove">
+                </form>
+            </div>
+        </div>
+        </div>
+        <hr/>
+        </div>
+    <% }) %>
+    </div>
+    </div>
+    </div>
+</div>
+</div>
+
+<%include bot%>

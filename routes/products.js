@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const ctrl = require('../controllers/products');
+const cart = require('../controllers/cart');
 
-const authentication = require('../middlewares/authentication');
 const validation = require('../middlewares/validation');
+const authentication = require('../middlewares/authentication');
 
 //List
 router.get('/', ctrl.listing);
@@ -10,15 +11,17 @@ router.get('/', ctrl.listing);
 //Find
 router.get('/find', ctrl.finding);
 
-//Add
-router.post('/add', validation.product, authentication, ctrl.adding);
+//Cart
+router.post('/addToCart', authentication, cart.addToCart);
 
-//router.post('/addToCart', authentication, ctr.addToCart);
+// //Add
+// router.post('/add', validation.product, authentication, ctrl.adding);
 
-//Edit
-router.post('/edit/:productID', authentication, ctrl.editing);
 
-//Delete
-router.delete('/:productID', authentication, ctrl.deleting);
+// //Edit
+// router.post('/edit/:productID', ctrl.editing);
+
+// //Delete
+// router.delete('/:productID', ctrl.deleting);
 
 module.exports = router;

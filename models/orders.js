@@ -17,7 +17,7 @@ const ORDER = new mongoose.Schema({
     status: {
         type: String,
         required: true,
-        default: "ship"
+        default: "making"
     }
 });
 
@@ -40,28 +40,19 @@ module.exports.finding = input => {
             {username: input},
             {status: input}
         ]})
+        .sort("orderID")
         .then(doc => {
             if(doc.length > 0) return doc;
         });
 }
 
-module.exports.findMine = (username, input) => {
-    return orders
-        .find({
-            $and:[
-            {
-                username
-            }, {
-                $or:[
-                    {orderID: input},
-                    {status: input}
-                ]
-            }]
-        })
+module.exports.reading = orderID => {
+    return orders.findOne({orderID})
         .then(doc => {
-            if(doc.length > 0) return doc;
+            if(doc) return doc;
         });
 }
+
 //Add
 module.exports.ordering = (username, input) => {
     const newOrder = new orders({

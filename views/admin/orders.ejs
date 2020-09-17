@@ -1,0 +1,28 @@
+<%include top%>
+
+<div class="container text-center"><div class="row">
+    <div class="col-sm-8"><p>
+        <h2>All orders (<%= data.length%>)</h2>
+    </p></div>
+    <form action="" method="" class="col-sm-4">
+        <br>
+        <input type="text" name="infor">
+        <input type="submit" value="Find">
+    </form>
+</div><hr></div>
+<ol><div class="container"><div class="row">
+<% data.forEach(o => { %>
+    <li class="col-sm-4">
+        <p><a href="/admin/readOrder?orderID=<%= o.orderID%>"><%= o.orderID%></a></p>
+        <p>Total money: <%= o.money%></p>
+        <p>Status: <%= o.status%></p>
+        <% if(o.status !== "cancel" && o.status !== "complete"){ %>
+        <form action="" method="POST">
+            <input type="hidden" name="orderID" value="<%= o.orderID%>">
+            <input type="submit" value="Change Status">
+        </form>
+        <% } %>
+    </li>
+<% }) %>,
+</div></div></ol>
+<%include bot%>

@@ -11,37 +11,18 @@ async function moneyCaculate(orderdetail) {
     return res;
 }
 
-module.exports.listing = async (req, res) => {
-    if(req.User.auth !== "admin"){
-        res.json({
-            message: `You are not authorized`
-        });
-        return;
-    }
-    try {
-        const orderList = await orders.listing();
-        res.json({
-            message: `Success`,
-            amount: orderList.length,
-            data: orderList
-        });
-        return;
-    } catch (error) {
-        res.json({
-            error: `${error}`
-        });
-        return;
-    }
-}   //OK
-
+//USER
 module.exports.myListing = async (req, res) => {
-    const username = req.User.user;
+    const username = req.user.user;
+    if(!username){
+        res.redirect('/login');
+        return;
+    };
     try {
         const myList = await orders.finding(username);
         if(myList){
-            res.json({
-                message: 'Success',
-                amout: myList.length,
+            res.render('user/myOrders', {
+                user: req.user,
                 data: myList
             });
             return;
@@ -58,6 +39,119 @@ module.exports.myListing = async (req, res) => {
         return;
     }
 }   //OK
+
+module.exports.reading = async (req, res) => {
+    const username = req.user.user;
+    if(!username){
+        res.redirect('/login');
+        return;
+    };
+    const orderID = req.query.orderID;
+    try {
+        const order = await orders.reading(orderID);
+        if(!order){
+            res.json({
+                message: `Order not found`
+            });
+            return;
+        } else {
+            if(req.user.auth !== "admin"){
+                res.render('user/readOrder', {
+                    user: req.user,
+                    data: order
+                })
+                return;
+            } else {
+                res.render('admin/readOrder', {
+                    data: order
+                });
+                return;
+            }
+        }
+    } catch (error) {
+        res.json({
+            error: `${error}`
+        });
+        return;
+    }
+}   //OK
+
+module.exports.adding = async (req, res) => {
+    const username = req.user.user;
+    if(!username){
+        res.redirect('/login');
+        return;
+    };
+    const orderdetail = JSON.parse(req.body.orderdetail),
+          orderID = 'ord' + username + Date.now();
+    try {
+        if(await orders.finding(orderID)){
+            res.json({
+                message: `OrderID is existed`
+            });
+            return;
+        } else {
+            const money = await moneyCaculate(orderdetail);
+            const infor = {
+                orderID,
+                orderdetail,
+                money
+            };
+            await orders.ordering(username, infor);
+            req.session.cart =[];
+            res.redirect('/users/readOrder?orderID=' + orderID);
+            return;
+        }
+    } catch (error) {
+        res.json({
+            error: `${error}`
+        });
+        return;
+    }
+}   //OK
+
+module.exports.cancel = async (req, res) => {
+    const username = req.user.user;
+    if(!username){
+        res.redirect('/login');
+        return;
+    };
+    const {orderID} = req.body;
+    try {
+        const order = await orders.finding(orderID);
+        if(order){
+            await orders.status(orderID, "cancel");
+            res.redirect('/users/myOrders');
+            return;
+        } else {
+            res.json({
+                message: `Order is not found`
+            });
+            return;
+        }
+    } catch (error) {
+        res.json({
+            error: `${error}`
+        });
+        return;
+    }
+}   //OK
+
+
+//ADMIN
+module.exports.listing = async (req, res) => {try {
+        const orderList = await orders.listing();
+        res.render('admin/orders', {
+            data: orderList
+        });
+        return;
+    } catch (error) {
+        res.json({
+            error: `${error}`
+        });
+        return;
+    }
+}   //
 
 module.exports.finding = async (req, res) => {
     if(req.User.auth !== "admin"){
@@ -88,121 +182,7 @@ module.exports.finding = async (req, res) => {
         });
         return;
     }
-}   //OK
-
-module.exports.findMine = async (req, res) => {
-    const {infor} = req.body,
-          username = req.User.user;
-    try {
-        const myOrder = await orders.findMine(username, infor);
-        if(myOrder){
-            res.json({
-                message: 'success',
-                amout: myOrder.length,
-                data: myOrder
-            });
-            return;
-        } else {
-            res.json({
-                message: `Order is not found`
-            });
-            return;
-        }
-    } catch (error) {
-        res.json({
-            error: `${error}`
-        });
-        return;
-    }
-}   //OK
-
-module.exports.adding = async (req, res) => {
-    const username = req.User.user;
-    const orderID = req.body.orderID,
-          orderdetail = JSON.parse(req.body.orderdetail);
-    try {
-        if(await orders.finding(orderID)){
-            res.json({
-                message: `OrderID is existed`
-            });
-            return;
-        } else {
-            const money = await moneyCaculate(orderdetail);
-            const infor = {
-                orderID,
-                orderdetail,
-                money
-            };
-            await orders.ordering(username, infor);
-            res.json({
-                message: 'success',
-                username,
-                infor
-            });
-            return;
-        }
-    } catch (error) {
-        res.json({
-            error: `${error}`
-        });
-        return;
-    }
-}   //OK
-
-module.exports.editing = async (req, res) => {
-    const user = req.User.user;
-    const {orderID} = req.params;
-    try {
-        const order = await orders.findMine(user, orderID);
-        if(order){
-            const infor = {
-                orderdetail: JSON.parse(req.body.orderdetail),
-                money: req.body.money
-            };
-            await orders.editing(orderID, infor);
-            res.json({
-                message: 'Success',
-                data: infor
-            });
-            return;
-        } else {
-            res.json({
-                message: `Order is not found`
-            });
-            return;
-        }
-    } catch (error) {
-        res.json({
-            error: `${error}`
-        });
-        return;
-    }
-}   //OK
-
-module.exports.cancel = async (req, res) => {
-    const user = req.User.user;
-    const {orderID} = req.params;
-    try {
-        const order = await orders.findMine(user, orderID);
-        if(order){
-            await orders.status(orderID, "cancel");
-            res.json({
-                message: `Success`
-            });
-            return;
-        } else {
-            res.json({
-                message: `Order is not found`
-            });
-            return;
-        }
-    } catch (error) {
-        res.json({
-            error: `${error}`
-        });
-        return;
-    }
-}   //OK
+}   //
 
 module.exports.status = async (req, res) => {
     if(req.User.auth !== "admin"){
@@ -234,7 +214,7 @@ module.exports.status = async (req, res) => {
         });
         return;
     }
-}   //OK
+}   //
 
 module.exports.delete = async (req, res) => {
     if(req.User.auth !== "admin"){
@@ -263,4 +243,4 @@ module.exports.delete = async (req, res) => {
         });
         return;
     }
-}   //OK
+}   //

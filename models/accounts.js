@@ -47,9 +47,23 @@ module.exports.listing = () => {
 
 //Find
 module.exports.finding = input => {
-    return accs.find({$or: [{username: input},{email: input}, {fullname: input}]})
+    return accs
+        .find({
+            $or: [
+                { username: input },
+                { email: input },
+                { fullname: input }
+            ]
+        })
         .then(doc => {
-            if(doc.length > 0) return doc;
+            if (doc.length > 0) return doc;
+        });
+}
+
+module.exports.reading = username => {
+    return accs.findOne({ username })
+        .then(doc => {
+            return doc;
         });
 }
 
@@ -69,7 +83,7 @@ module.exports.register = acc => {
 //Edit
 module.exports.changeInfo = (username, input) => {
     accs.findOneAndUpdate(
-        {username},
+        { username },
         {
             fullname: input.fullname,
             email: input.email
@@ -79,13 +93,13 @@ module.exports.changeInfo = (username, input) => {
 
 module.exports.changePwd = (username, password, decode) => {
     accs.findOneAndUpdate(
-        {username},
-        {password, decode})
+        { username },
+        { password, decode })
         .exec();
 };
 
 //Delete
 module.exports.deleteAcc = username => {
-    accs.findOneAndDelete({username})
+    accs.findOneAndDelete({ username })
         .exec();
 }

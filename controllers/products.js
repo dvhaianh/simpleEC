@@ -1,11 +1,22 @@
 const products = require('../models/products');
 
 module.exports.listing = async (req, res) => {
+    if(!req.session.cart){
+        req.session.cart = [];
+    }
     try {
         const Products = await products.listing();
-        res.render('index', {
-            title: "Demo",
-            data: Products
+        if(req.user.auth === "admin"){
+            res.render('admin/products', {
+                data: Products
+            });
+            return;
+        }
+        res.render('user/index', {
+            Products,
+            data: Products,
+            cart: req.session.cart,
+            user: req.user
         });
         return;
     } catch (error) {
@@ -17,8 +28,13 @@ module.exports.listing = async (req, res) => {
 };  //OK
 
 module.exports.finding = async (req, res) => {
-    const {infor} = req.body;
+    const {infor} = req.query;
+    if(infor == ""){
+        res.redirect('/');
+        return;
+    }
     try {
+        const Products = await products.listing();
         const product = await products.finding(infor);
         if(!product){
             res.json({
@@ -26,10 +42,11 @@ module.exports.finding = async (req, res) => {
             });
             return;
         } else {
-            res.json({
-                message: `Success`,
-                amount: product.length,
-                data: product
+            res.render('user/index', {
+                Products,
+                data: product,
+                cart: req.session.cart? req.session.cart: [],
+                user: req.user
             });
             return;
         }

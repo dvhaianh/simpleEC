@@ -1,27 +1,30 @@
 const router = require('express').Router();
-const ctrl = require('../controllers/users');
 
-const authentication = require('../middlewares/authentication');
-const validation = require('../middlewares/validation');
+const accs = require('../controllers/accounts');
+const orders = require('../controllers/orders');
 
-//Login
-router.post('/login', validation.login, ctrl.login);
+router.post('/buy', orders.adding);
 
-//List
-router.get('/', authentication, ctrl.listing);
+router.get('/readOrder', orders.reading);
 
-//Find
-router.get('/find', authentication, ctrl.finding);
+router.get('/myOrders', orders.myListing);
 
-//Add
-router.post('/register', validation.register, ctrl.register);
+router.post('/cancel', orders.cancel);
 
-//Edit  
-router.post('/ChangeInformation/:username', authentication, ctrl.changeInfor);
+router.get('/change', (req, res) => {
+    res.render('user/change');
+});
 
-router.post('/ChangePassword/:username', authentication, ctrl.changePwd);
+router.get('/changeInformation', (req, res) => {
+    res.render('/user/changeInfor');
+});
 
-//Delete
-router.delete('/:username', authentication, ctrl.delete);
+router.post('/changeInformation', accs.changeInfor);
+
+router.get('/changePassord', (req, res) => {
+    res.render('/user/changePass');
+});
+
+router.post('/changePassword', accs.changePwd);
 
 module.exports = router;

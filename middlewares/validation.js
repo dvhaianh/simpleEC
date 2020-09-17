@@ -38,9 +38,6 @@ const schema = {
                     .required()
     }),
     order: joi.object({
-        orderID:    joi.string()
-                    .pattern(new RegExp("^(ord)[0-9]+$"))
-                    .required(),
         orderdetail:joi.string()
                     .required(),
     })

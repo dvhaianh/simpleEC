@@ -10,8 +10,7 @@ require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const productsRouter = require('./routes/products');
-const ordersRouter = require('./routes/orders');
+const adminRouter = require('./routes/admin');
 
 const authentication = require('./middlewares/authentication');
 
@@ -42,15 +41,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  secret: 'secret-key',
+  secret: "Secret-session-key",
   resave: false,
   saveUninitialized: false,
 }));
 
-app.use('/', productsRouter);
-app.use('/users', usersRouter);
-app.use('/products', productsRouter);
-app.use('/orders', authentication, ordersRouter);
+app.use('/', authentication.login, indexRouter);
+app.use('/users', authentication.login, usersRouter);
+app.use('/admin', authentication.admin, adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
