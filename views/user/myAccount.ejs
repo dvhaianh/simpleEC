@@ -1,0 +1,20 @@
+<%include top%>
+
+<div class="container"><div class="row">
+    <form action="/users/changeInformation" method="POST">
+        <p><b>Username:</b> <%= data.username%></p>
+        <p><b>Create day:</b> <%= data.created%></p>
+        <div>
+            <label for="fullname"><b>Fullname: </b></label>
+            <input type="text" name="fullname" id="fullname" value="<%= data.fullname%>">
+        </div>
+        <div>
+            <label for="email"><b>Email: </b></label>
+            <input type="email" name="email" id="email" value="<%= data.email%>">
+        </div>
+        <input type="submit" value="Edit">
+        <a href="/users/changePassword">Change Password</a>
+    </form>
+</div></div>
+
+<%include bot%>

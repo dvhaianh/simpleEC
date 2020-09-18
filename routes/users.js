@@ -15,15 +15,11 @@ router.get('/myOrders', orders.myListing);
 //OK
 router.post('/cancel', orders.cancel);
 
+//OK
 router.get('/find', orders.findMine)
 
-router.get('/change', (req, res) => {
-    res.render('user/change');
-});
-
-router.get('/changeInformation', (req, res) => {
-    res.render('/user/changeInfor');
-});
+//OK
+router.get('/information', accs.reading);
 
 router.post('/changeInformation', accs.changeInfor);
 

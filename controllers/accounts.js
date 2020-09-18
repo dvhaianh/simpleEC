@@ -91,13 +91,7 @@ module.exports.login = async (req, res) => {
 }   //OK
 
 module.exports.changeInfor = async (req, res) => {
-    const { username } = req.params;
-    if (req.User.user !== username) {
-        res.json({
-            message: `You are not authorized`
-        });
-        return;
-    }
+    const username = req.user.user;
     const { fullname, email } = req.body;
     try {
         const old = await accs.finding(username);
@@ -110,10 +104,7 @@ module.exports.changeInfor = async (req, res) => {
             } else {
                 await accs.changeInfo(username, { fullname, email });
                 const acc = await accs.finding(username);
-                res.json({
-                    message: `Success`,
-                    data: acc
-                });
+                res.redirect('/users/information?username=' + username);
                 return;
             }
         } else {
@@ -226,11 +217,19 @@ module.exports.finding = async (req, res) => {
 module.exports.reading = async (req, res) => {
     const { username } = req.query;
     try {
-        const user = await accs.reading(username);
-        res.render('admin/readUser', {
-            data: user
-        });
-        return;
+        const account = await accs.reading(username);
+        if(req.user.auth === "admin"){
+            res.render('admin/readUser', {
+                data: account
+            });
+            return;
+        } else {
+            res.render('user/myAccount', {
+                user: req.user,
+                data: account
+            });
+            return;
+        }
     } catch (error) {
         res.json({
             message: `${error}`

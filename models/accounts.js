@@ -68,7 +68,7 @@ module.exports.reading = username => {
         .then(doc => {
             return doc;
         });
-}
+}   //OK
 
 //Add
 module.exports.register = acc => {

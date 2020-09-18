@@ -14,11 +14,12 @@
       <div class="col-sm"><a href="/login">Login</a></div>
       <div class="col-sm"><a href="/register">Register</a></div>
       <div class="col-sm">Hello, <b>Guest</b>.</div>
-    <% } else { %>
+    <% } else { 
+      const URL = "/users/information?username=" + user.user;
+    %>
       <div class="col-sm"><a href="/">Home</a></div>
       <div class="col-sm"><a href="/users/myOrders">My Orders</a></div>
-      <div class="col-sm"><a href="">Change Information</a></div>
-      <div class="col-sm">Hi, <b><%= user.user%></b>. <a href="/logout">Logout</a></div>
+      <div class="col-sm">Hi, <b><a href="<%= URL%>"><%= user.user%></a></b>. <a href="/logout">Logout</a></div>
     <% } %>
     </div></div></div>
     <hr>
