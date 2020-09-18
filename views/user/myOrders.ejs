@@ -3,9 +3,18 @@
     ">
     <h2 class="col-sm-12">All my orders</h2>
     <div class="col-sm-2"></div>
-    <form action="/users/findMine" class="col-sm-8">
+    <form action="/users/find" class="col-sm-8">
         <div class="container"><div class="row">
-            <input type="text" name="infor" class="col-sm-8" placeholder="Find by orderID, status">
+            <input type="text" name="infor" class="col-sm-8" placeholder="Find by orderID, status" list="orders">
+            <datalist id="orders">
+                <option value="making"></option>
+                <option value="shiping"></option>
+                <option value="complete"></option>
+                <option value="cancel"></option>
+            <% myList.forEach(o => { %>
+                <option value="<%= o.orderID%>"></option>
+            <% }) %>
+            </datalist>
             <input type="submit" value="Find" class="col-sm-4">
         </div></div>
     </form>

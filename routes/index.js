@@ -56,4 +56,7 @@ router.post('/addToCart', cart.add);
 //Remove from cart  OK
 router.post('/removeFromCart', cart.remove);
 
+//Edit cart
+router.post('/editCart', cart.edit)
+
 module.exports = router;

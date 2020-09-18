@@ -3,7 +3,7 @@ const products = require('../models/products');
 
 async function moneyCaculate(orderdetail) {
     let res = 0;
-    for(let index in orderdetail) {
+    for (let index in orderdetail) {
         const quantity = orderdetail[index].quantity;
         const price = await products.getPrice(orderdetail[index].productID);
         res += price * quantity;
@@ -14,16 +14,17 @@ async function moneyCaculate(orderdetail) {
 //USER
 module.exports.myListing = async (req, res) => {
     const username = req.user.user;
-    if(!username){
+    if (!username) {
         res.redirect('/login');
         return;
     };
     try {
         const myList = await orders.finding(username);
-        if(myList){
+        if (myList) {
             res.render('user/myOrders', {
                 user: req.user,
-                data: myList
+                data: myList,
+                myList
             });
             return;
         } else {
@@ -42,20 +43,20 @@ module.exports.myListing = async (req, res) => {
 
 module.exports.reading = async (req, res) => {
     const username = req.user.user;
-    if(!username){
+    if (!username) {
         res.redirect('/login');
         return;
     };
     const orderID = req.query.orderID;
     try {
         const order = await orders.reading(orderID);
-        if(!order){
+        if (!order) {
             res.json({
                 message: `Order not found`
             });
             return;
         } else {
-            if(req.user.auth !== "admin"){
+            if (req.user.auth !== "admin") {
                 res.render('user/readOrder', {
                     user: req.user,
                     data: order
@@ -78,14 +79,14 @@ module.exports.reading = async (req, res) => {
 
 module.exports.adding = async (req, res) => {
     const username = req.user.user;
-    if(!username){
+    if (!username) {
         res.redirect('/login');
         return;
     };
     const orderdetail = JSON.parse(req.body.orderdetail),
-          orderID = 'ord' + username + Date.now();
+        orderID = 'ord' + username + Date.now();
     try {
-        if(await orders.finding(orderID)){
+        if (await orders.finding(orderID)) {
             res.json({
                 message: `OrderID is existed`
             });
@@ -98,7 +99,7 @@ module.exports.adding = async (req, res) => {
                 money
             };
             await orders.ordering(username, infor);
-            req.session.cart =[];
+            req.session.cart = [];
             res.redirect('/users/readOrder?orderID=' + orderID);
             return;
         }
@@ -112,14 +113,14 @@ module.exports.adding = async (req, res) => {
 
 module.exports.cancel = async (req, res) => {
     const username = req.user.user;
-    if(!username){
+    if (!username) {
         res.redirect('/login');
         return;
     };
-    const {orderID} = req.body;
+    const { orderID } = req.body;
     try {
         const order = await orders.finding(orderID);
-        if(order){
+        if (order) {
             await orders.status(orderID, "cancel");
             res.redirect('/users/myOrders');
             return;
@@ -137,9 +138,32 @@ module.exports.cancel = async (req, res) => {
     }
 }   //OK
 
+module.exports.findMine = async (req, res) => {
+    const username = req.user.user,
+        { infor } = req.query;
+    if(infor === ""){
+        res.redirect('/users/myOrders');
+    }
+    try {
+        const order = await orders.findMine(username, infor);
+        const myList = await orders.finding(username);
+        res.render('user/myOrders', {
+            user: req.user,
+            data: order,
+            myList
+        });
+        return;
+    } catch (error) {
+        res.json({
+            message: `${error}`
+        });
+        return;
+    }
+}   //OK
 
 //ADMIN
-module.exports.listing = async (req, res) => {try {
+module.exports.listing = async (req, res) => {
+    try {
         const orderList = await orders.listing();
         res.render('admin/orders', {
             data: orderList
@@ -154,16 +178,16 @@ module.exports.listing = async (req, res) => {try {
 }   //
 
 module.exports.finding = async (req, res) => {
-    if(req.User.auth !== "admin"){
+    if (req.User.auth !== "admin") {
         res.json({
             message: `You are not authorized`
         });
         return;
     }
-    const {infor} = req.body;
+    const { infor } = req.body;
     try {
         const listFind = await orders.finding(infor);
-        if(listFind){
+        if (listFind) {
             res.json({
                 message: 'success',
                 amount: listFind.length,
@@ -185,18 +209,18 @@ module.exports.finding = async (req, res) => {
 }   //
 
 module.exports.status = async (req, res) => {
-    if(req.User.auth !== "admin"){
+    if (req.User.auth !== "admin") {
         res.json({
             message: `You are not authorized`
         });
         return;
     }
     const user = req.User.user;
-    const {orderID} = req.params;
+    const { orderID } = req.params;
     try {
         const order = await orders.finding(orderID);
-        if(order){
-            const {status} = req.body
+        if (order) {
+            const { status } = req.body
             await orders.status(orderID, status);
             res.json({
                 message: `Success`
@@ -217,15 +241,15 @@ module.exports.status = async (req, res) => {
 }   //
 
 module.exports.delete = async (req, res) => {
-    if(req.User.auth !== "admin"){
+    if (req.User.auth !== "admin") {
         res.json({
             message: `You are not authorized`
         });
         return;
     }
-    const {orderID} = req.params;
+    const { orderID } = req.params;
     try {
-        if(await orders.finding(orderID)){
+        if (await orders.finding(orderID)) {
             await orders.delete(orderID);
             res.json({
                 message: 'Success'

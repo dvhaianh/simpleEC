@@ -4,7 +4,8 @@ const ACCOUNT = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        min: 6
+        min: 6,
+        index: true
     },
     password: {
         type: String,
@@ -17,11 +18,13 @@ const ACCOUNT = new mongoose.Schema({
     },
     fullname: {
         type: String,
-        required: true
+        required: true,
+        index: true
     },
     email: {
         type: String,
-        require: true
+        require: true,
+        index: true
     },
     authorization: {
         type: String,

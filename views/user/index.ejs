@@ -28,7 +28,7 @@
 <!--List Product-->
     <div id="left" class="col-sm-8">
     <div class="container">
-        <h2 class="text-center">Products</h2>
+        <h2 class="text-center">Products (<%= data.length%>)</h2>
         <hr>
     <div class="row">
     <% data.forEach(p => { %>
@@ -58,10 +58,13 @@
 <!--Shopping Cart-->
     <div id="right" class="col-sm-4 border-primary">
     <div class="container">
+        <!--TOP-->
         <h2 class="text-center">Shopping cart (<%= cart.length%>)</h2>
         <%
         let orderdetail = [];
+        let money = 0;
         cart.forEach(o => {
+            money += o.price * o.quantity;
             orderdetail.push({
                 productID: o.productID,
                 price: o.price,
@@ -69,37 +72,51 @@
             });
         })
         %>
-        <form action="/users/buy" method="POST">
-            <input type="hidden" name="orderdetail" value="<%= JSON.stringify(orderdetail)%>">
-            <input type="submit" value="Buy">
-        </form>
-        <hr>
-    <div class="row">
-    <% cart.forEach(o => { %>
-        <div class="text-center col-sm-12">
-        <div class="container">
         <div class="row">
-            <br>
-            <div class="col-sm-6">
-                <p><b>ProductID:</b> <%= o.productID%></p>
-                <p><b>Product Name:</b> <%= o.productName%></p>
-                <p><b>Price:</b> <%= o.price%></p>
-                <p><b>Quantity:</b> <%= o.quantity%></p>
+            <div class="col-sm-9">
+                <p><b>Total money:</b> <%= money%></p>
             </div>
-            <div class="col-sm-6">
-                <img src="<%= o.image%>">
-                <br><br><br>
-                <form action="/removeFromCart" method="POST">
-                    <input type="hidden" name="productID" value="<%= o.productID%>">
-                    <input type="submit" value="Remove">
-                </form>
+            <form action="/users/buy" method="POST">
+                <input type="hidden" name="orderdetail" value="<%= JSON.stringify(orderdetail)%>">
+                <input type="submit" value="Buy">
+            </form>
+        </div>
+        <hr>
+        <div class="row">
+        <% cart.forEach(o => { %>
+            <div class="text-center col-sm-12">
+            <div class="container">
+            <div class="row">
+                <br>
+                <!--EDIT-->
+                <div id="edit" class="col-sm-6">
+                    <form action="/editCart" method="POST">
+                        <p><b>Product Name:</b> <%= o.productName%></p>
+                        <p><b>Price:</b> <%= o.price%></p>
+                        <div>
+                            <input type="hidden" name="productID" value="<%= o.productID%>">
+                            <label for="quantity"><b>Quantity:</b> </label>
+                            <input type="number" name="quantity" value="<%= o.quantity%>" style="width: 50px;">
+                            <input type="submit" value="Edit">
+                        </div>
+                    </form>
+                </div>
+                <!--REMOVE-->
+                <div id="remove" class="col-sm-6">
+                    <p><b>ProductID:</b> <%= o.productID%></p>
+                    <img src="<%= o.image%>">
+                    <br><br>
+                    <form action="/removeFromCart" method="POST">
+                        <input type="hidden" name="productID" value="<%= o.productID%>">
+                        <input type="submit" value="Remove">
+                    </form>
+                </div>
             </div>
+            </div>
+            <hr/>
+            </div>
+        <% }) %>
         </div>
-        </div>
-        <hr/>
-        </div>
-    <% }) %>
-    </div>
     </div>
     </div>
 </div>

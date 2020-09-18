@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 
 const ORDER = new mongoose.Schema({
-    orderID :{
+    orderID: {
         type: String,
-        requried: true
+        requried: true,
+        index: true
     },
     username: {
         type: String,
-        rqeuired: true
+        rqeuired: true,
+        index: true
     },
     orderdetail: Array(),
     money: {
@@ -17,7 +19,8 @@ const ORDER = new mongoose.Schema({
     status: {
         type: String,
         required: true,
-        default: "making"
+        default: "making",
+        index: true
     }
 });
 
@@ -35,21 +38,42 @@ module.exports.listing = () => {
 //Find
 module.exports.finding = input => {
     return orders
-        .find({$or:[
-            {orderID: input},
-            {username: input},
-            {status: input}
-        ]})
+        .find({
+            $or: [
+                { orderID: input },
+                { username: input },
+                { status: input }
+            ]
+        })
         .sort("orderID")
         .then(doc => {
-            if(doc.length > 0) return doc;
+            if (doc.length > 0) return doc;
         });
 }
 
 module.exports.reading = orderID => {
-    return orders.findOne({orderID})
+    return orders.findOne({ orderID })
         .then(doc => {
-            if(doc) return doc;
+            if (doc) return doc;
+        });
+}
+
+module.exports.findMine = (username, input) => {
+    return orders
+        .find({
+            $and: [
+                { username },
+                {
+                    $or: [
+                        { orderID: input },
+                        { status: input }
+                    ]
+                }
+            ]
+        })
+        .sort("orderID")
+        .then(doc => {
+            return doc;
         });
 }
 
@@ -67,7 +91,7 @@ module.exports.ordering = (username, input) => {
 //Edit
 module.exports.editing = (orderID, input) => {
     orders.findOneAndUpdate(
-        {orderID},
+        { orderID },
         {
             orderdetail: input.orderdetail,
             money: input.money
@@ -77,8 +101,8 @@ module.exports.editing = (orderID, input) => {
 
 module.exports.status = (orderID, status) => {
     orders.findOneAndUpdate(
-        {orderID},
-        {status})
+        { orderID },
+        { status })
         .exec();
 }
 
