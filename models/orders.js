@@ -111,3 +111,7 @@ module.exports.delete = orderID => {
     orders.findOneAndDelete(orderID)
         .exec();
 }
+
+module.exports.deleteUser = username => {
+    orders.deleteMany({username}).exec();
+}

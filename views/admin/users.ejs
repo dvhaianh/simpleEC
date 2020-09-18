@@ -17,7 +17,7 @@
         <p>Fullname: <%= a.fullname%></p>
         <p>Email: <%= a.email%></p>
         <% if(a.authorization !== "admin"){ %>
-        <form action="" class="">
+        <form action="/admin/users/delete" method="POST">
             <input type="hidden" name="username" value="<%= a.username%>">
             <input type="submit" value="Delete">
         </form>

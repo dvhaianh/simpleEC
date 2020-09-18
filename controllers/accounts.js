@@ -1,6 +1,8 @@
-const accs = require('../models/accounts');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
+const accs = require('../models/accounts');
+const orders = require('../models/orders');
 
 module.exports.register = async (req, res) => {
     const decode = await bcrypt.genSalt(13);
@@ -206,7 +208,7 @@ module.exports.finding = async (req, res) => {
         });
         return;
     }
-}
+}   //OK
 
 module.exports.reading = async (req, res) => {
     const { username } = req.query;
@@ -233,19 +235,12 @@ module.exports.reading = async (req, res) => {
 }   //OK
 
 module.exports.delete = async (req, res) => {
-    if (req.User.auth !== "admin") {
-        res.json({
-            message: `You are not authorized`
-        });
-        return;
-    }
-    const { username } = req.params;
+    const { username } = req.body;
     try {
         if (await accs.finding(username)) {
+            await orders.deleteUser(username);
             await accs.deleteAcc(username);
-            res.json({
-                message: `Success`
-            });
+            res.redirect('/admin/users');
             return;
         } else {
             res.json({
