@@ -119,16 +119,10 @@ module.exports.changeInfor = async (req, res) => {
         });
         return;
     }
-}
+}   //OK
 
 module.exports.changePwd = async (req, res) => {
-    const { username } = req.params;
-    if (req.User.user !== username) {
-        res.json({
-            message: `You are not authorized`
-        });
-        return;
-    }
+    const username = req.user.user;
     const { currentPassword, newPassword } = req.body;
     try {
         const old = await accs.finding(username);
@@ -167,7 +161,7 @@ module.exports.changePwd = async (req, res) => {
         });
         return;
     }
-}
+}   //OK
 
 module.exports.listing = async (req, res) => {
     try {
@@ -236,7 +230,7 @@ module.exports.reading = async (req, res) => {
         });
         return;
     }
-}
+}   //OK
 
 module.exports.delete = async (req, res) => {
     if (req.User.auth !== "admin") {
