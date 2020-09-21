@@ -28,13 +28,21 @@ router.get('/products', products.listing);
 //OK
 router.get('/products/find', products.finding);
 
+//OK
 router.get('/products/add', (req, res) => {
     res.render('admin/productAdd');
 });
 
+//OK
 router.post('/products/add', validation.product, products.adding);
 
+//OK
 router.post('/products/delete', products.deleting);
+
+//OK
+router.get('/products/edit', products.editor);
+
+router.post('/products/edit', products.editing);
 
 //OK
 router.get('/orders', orders.listing);

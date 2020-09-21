@@ -1,0 +1,33 @@
+<%include top%>
+
+<div class="container"><div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <div class="container text-center">
+            <h2>Edit Product</h2><br>
+            <form action="/admin/products/edit" method="POST">
+                <div class="container"><div class="row">
+                    <label class="col-sm-4" for="productID">Product ID</label>
+                    <input class="col-sm-8" type="text" value="<%= data.productID%>" disabled>
+                    <input type="hidden" name="productID" value="<%= data.productID%>">
+                </div></div>
+                <div class="container"><div class="row">
+                    <label class="col-sm-4" for="productName">Product Name</label>
+                    <input class="col-sm-8" type="text" name="productName" id="productName" value="<%= data.productName%>">
+                </div></div>
+                <div class="container"><div class="row">
+                    <label class="col-sm-4" for="Price">Price</label>
+                    <input class="col-sm-8" type="text" name="price" id="price" value="<%= data.price%>">
+                </div></div>
+                <div class="container"><div class="row">
+                    <label class="col-sm-4" for="productID">Image Link</label>
+                    <input class="col-sm-8" type="text" name="image" id="image" value="<%= data.image%>">
+                </div></div><br>
+                <input type="submit" value="Edit">
+            </form>
+        </div>
+    </div>
+    <div class="col-sm-2"></div>
+</div></div>
+
+<%include bot%>

@@ -34,10 +34,18 @@
                 <img src="<%= p.image%>">
             </div>
         </div></div>
-        <form action="/admin/products/delete" class="text-center" method="POST">
-            <input type="hidden" name="productID" value="<%= p.productID%>">
-            <input type="submit" value="Delete">
-        </form>
+        <div class="container"><div class="row"> 
+            <div class="col-sm"></div>
+            </form><form action="/admin/products/edit" class="col-sm text-center" method="GET">
+                <input type="hidden" name="productID" value="<%= p.productID%>">
+                <input type="submit" value="Edit">
+            </form>
+            <form action="/admin/products/delete" class="col-sm text-center" method="POST">
+                <input type="hidden" name="productID" value="<%= p.productID%>">
+                <input type="submit" value="Delete">
+            </form>
+            <div class="col-sm"></div>
+        </div></div>
         <hr>
     </li>
 <% }) %>

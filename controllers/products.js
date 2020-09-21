@@ -100,29 +100,38 @@ module.exports.adding = async (req, res) => {
         });
         return;
     }
-};  //
+};  //OK
 
-module.exports.editing = async (req, res) => {
-    if(req.User.auth !== "admin"){
+module.exports.editor = async (req, res) => {
+    const {productID} = req.query;
+    try {
+        const product = await products.finding(productID);
+        if(product){
+            res.render('admin/productEdit', {
+                data: product[0]
+            });
+            return;
+        }
+    } catch (error) {
         res.json({
-            message: `You are not authorized`
+            error: `${error}`
         });
         return;
     }
-    const {productID} = req.params;
+}   //OK
+
+module.exports.editing = async (req, res) => {
+    const productID = req.body.productID;
     const infor = {
         productName: req.body.productName,
         price: req.body.price,
         image: req.body.image
     }
+    console.log(productID);
     try {
         if(await products.finding(productID)){
             await products.editing(productID, infor);
-            const product = await products.finding(productID);
-            res.json({
-                message: `Update product ${productID} successfully`,
-                data: product
-            });
+            res.redirect('/admin/products');
             return;
         } else {
             res.json({
