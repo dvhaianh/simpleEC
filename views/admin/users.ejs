@@ -1,19 +1,32 @@
 <%include top%>
 
 <div class="container text-center"><div class="row">
-    <div class="col-sm-8"><p>
-        <h2>All users (<%= data.length%>)</h2>
+    <div class="col-sm-7"><p>
+        <h2><%= header%> (<%= data.length%>)</h2>
     </p></div>
-    <form action="" method="" class="col-sm-4">
+    <form action="/admin/users/find" method="GET" class="col-sm-5">
         <br>
-        <input type="text" name="infor">
-        <input type="submit" value="Find">
+        <div class="container"><div class="row">
+            <input class="col-sm-10" type="text" name="infor" placeholder="find by username, fullname, email" list="account">
+            <datalist id="account">
+                <% data.forEach(a => { %>
+                    <option value="<%= a.username%>"></option>
+                <% }) %>
+                <% data.forEach(a => { %>
+                    <option value="<%= a.fullname%>"></option>
+                <% }) %>
+                <% data.forEach(a => { %>
+                    <option value="<%= a.email%>"></option>
+                <% }) %>
+            </datalist>
+            <input class="col-sm-2" type="submit" value="Find">
+        </div></div>
     </form>
 </div><hr></div>
 <ol><div class="container"><div class="row">
 <% data.forEach(a => { %>
     <li class="col-sm-4">
-        <p><a href="/admin/readUser?username=<%= a.username%>"><%= a.username%></a></p>
+        <p><a href="/admin/userRead?username=<%= a.username%>"><%= a.username%></a></p>
         <p>Fullname: <%= a.fullname%></p>
         <p>Email: <%= a.email%></p>
         <% if(a.authorization !== "admin"){ %>

@@ -34,7 +34,6 @@ const schema = {
         price:      joi.number()
                     .required(),
         image:      joi.string()
-                    .pattern(new RegExp("^(\/images\/[\w\W]+$)"))
                     .required()
     }),
     order: joi.object({

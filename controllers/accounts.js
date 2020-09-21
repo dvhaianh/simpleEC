@@ -169,6 +169,7 @@ module.exports.listing = async (req, res) => {
     try {
         const listAcc = await accs.listing();
         res.render('admin/users', {
+            header: "All users",
             data: listAcc
         });
         return;
@@ -181,13 +182,7 @@ module.exports.listing = async (req, res) => {
 }   //OK
 
 module.exports.finding = async (req, res) => {
-    if (req.User.auth !== "admin") {
-        res.json({
-            message: `You are not authorized`
-        });
-        return;
-    }
-    const { infor } = req.body;
+    const { infor } = req.query;
     try {
         const acc = await accs.finding(infor)
         if (!acc) {
@@ -196,8 +191,8 @@ module.exports.finding = async (req, res) => {
             });
             return;
         } else {
-            res.json({
-                message: `Success`,
+            res.render('admin/users', {
+                header: "Find user",
                 data: acc
             });
             return;
@@ -215,7 +210,7 @@ module.exports.reading = async (req, res) => {
     try {
         const account = await accs.reading(username);
         if(req.user.auth === "admin"){
-            res.render('admin/readUser', {
+            res.render('admin/userRead', {
                 data: account
             });
             return;
@@ -254,4 +249,4 @@ module.exports.delete = async (req, res) => {
         });
         return;
     }
-}
+}   //OK

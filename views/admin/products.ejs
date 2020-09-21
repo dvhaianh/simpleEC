@@ -1,13 +1,22 @@
 <%include top%>
 
 <div class="container text-center"><div class="row">
-    <div class="col-sm-8"><p>
-        <h2>All products (<%= data.length%>)</h2>
-        <a href="">Add more</a>
+    <div class="col-sm-7"><p>
+        <h2><%= header%> (<%= data.length%>)</h2>
+        <a href="/admin/products/add">Add more</a>
     </p></div>
-    <form action="/find" method="GET" class="col-sm-4">
+    <form action="/admin/products/find" method="GET" class="col-sm-5">
         <br>
-        <input type="text" name="infor">
+        <input type="text" name="infor" placeholder="Find by productID, productName" list="product">
+        <datalist id="product">
+        <% Products.forEach(p => { %>
+            <option value="<%= p.productName%>"></option>
+        <% }) %>
+        <% Products.forEach(p => { %>
+            <option value="<%= p.productID%>"></option>
+        <% }) %>
+            <option value=""></option>
+        </datalist>
         <input type="submit" value="Find">
     </form>
 </div><hr></div>
@@ -17,7 +26,7 @@
     <li class="col-sm-6">
         <div class="container"><div class="row">
             <div class="col-sm-6">
-                <p><b>Product ID:</b> <%=p.productID%></p>
+                <p><b>Product ID:</b> <%= p.productID%></p>
                 <p><b>Product Name:</b> <%= p.productName%></p>
                 <p><b>Price:</b> <%= p.price%></p>
             </div>
@@ -25,6 +34,10 @@
                 <img src="<%= p.image%>">
             </div>
         </div></div>
+        <form action="/admin/products/delete" class="text-center" method="POST">
+            <input type="hidden" name="productID" value="<%= p.productID%>">
+            <input type="submit" value="Delete">
+        </form>
         <hr>
     </li>
 <% }) %>

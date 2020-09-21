@@ -8,6 +8,8 @@ module.exports.listing = async (req, res) => {
         const Products = await products.listing();
         if(req.user.auth === "admin"){
             res.render('admin/products', {
+                header: "All products",
+                Products,
                 data: Products
             });
             return;
@@ -30,8 +32,13 @@ module.exports.listing = async (req, res) => {
 module.exports.finding = async (req, res) => {
     const {infor} = req.query;
     if(infor == ""){
-        res.redirect('/');
-        return;
+        if(req.user.auth !== "admin"){
+            res.redirect('/');
+            return;
+        } else {
+            res.redirect('/admin/products');
+            return;
+        }
     }
     try {
         const Products = await products.listing();
@@ -42,13 +49,22 @@ module.exports.finding = async (req, res) => {
             });
             return;
         } else {
-            res.render('user/index', {
-                Products,
-                data: product,
-                cart: req.session.cart? req.session.cart: [],
-                user: req.user
-            });
-            return;
+            if(req.user.auth !== "admin"){
+                res.render('user/index', {
+                    Products,
+                    data: product,
+                    cart: req.session.cart? req.session.cart: [],
+                    user: req.user
+                });
+                return;
+            } else {
+                res.render('admin/products', {
+                    header: "Find product",
+                    Products,
+                    data: product
+                });
+                return;
+            }
         }
     } catch (error) {
         res.json({
@@ -59,12 +75,6 @@ module.exports.finding = async (req, res) => {
 };  //OK
 
 module.exports.adding = async (req, res) => {
-    if(req.User.auth !== "admin"){
-        res.json({
-            message: `You are not authorized`
-        });
-        return;
-    }
     const {productID, productName, price, image} = req.body;
     const infor = {
         productID,
@@ -81,10 +91,7 @@ module.exports.adding = async (req, res) => {
         } else {
             await products.adding(infor);
             const product = await products.finding(infor.productID);
-            res.json({
-                message: `A new product is added`,
-                data: product
-            });
+            res.redirect('/admin/products/find?infor=' + productID);
             return;
         }
     } catch (error) {
@@ -93,7 +100,7 @@ module.exports.adding = async (req, res) => {
         });
         return;
     }
-};  //OK
+};  //
 
 module.exports.editing = async (req, res) => {
     if(req.User.auth !== "admin"){
@@ -129,22 +136,14 @@ module.exports.editing = async (req, res) => {
         });
         return;
     }
-};  //OK
+};  //
 
 module.exports.deleting = async (req, res) => {
-    if(req.User.auth !== "admin"){
-        res.json({
-            message: `You are not authorized`
-        });
-        return;
-    }
-    const {productID} = req.params;
+    const {productID} = req.body;
     try {
         if(await products.finding(productID)){
             await products.delete(productID);
-            res.json({
-                message: `Success`
-            });
+            res.redirect('/admin/products');
             return;
         } else {
             res.json({

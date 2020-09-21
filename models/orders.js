@@ -49,14 +49,14 @@ module.exports.finding = input => {
         .then(doc => {
             if (doc.length > 0) return doc;
         });
-}
+}   //OK
 
 module.exports.reading = orderID => {
     return orders.findOne({ orderID })
         .then(doc => {
             if (doc) return doc;
         });
-}
+}   //OK
 
 module.exports.findMine = (username, input) => {
     return orders
@@ -114,4 +114,4 @@ module.exports.delete = orderID => {
 
 module.exports.deleteUser = username => {
     orders.deleteMany({username}).exec();
-}
+}   //OK
