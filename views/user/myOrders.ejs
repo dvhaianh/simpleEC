@@ -30,7 +30,7 @@
             <p><a href="/users/readOrder?orderID=<%= o.orderID%>"><%= o.orderID%></a></p>
             <p>Total money: <%= o.money%></p>
             <p>Status: <%= o.status%></p>
-            <% if(o.status !== "cancel" && o.status !== "complete"){ %>
+            <% if(o.status === "making"){ %>
         <!--Hủy đơn-->
             <form action="/users/cancel" method="POST">
                 <input type="hidden" name="orderID" value="<%= o.orderID%>">

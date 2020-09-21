@@ -40,7 +40,7 @@
                     <img src="<%= p.image%>">
                 </div>
                 <div>
-                    <p><b>Product Name:</b> <%= p.productName%></p>
+                    <p><b>Name:</b> <%= p.productName%></p>
                     <p><b>Price:</b> <%= p.price%></p>
                     <input type="hidden" name="productName" value="<%= p.productName%>">
                     <input type="hidden" name="image" value="<%= p.image%>">
@@ -90,7 +90,8 @@
             <!--Sửa giỏ hàng-->
                 <div id="edit" class="col-sm-6">
                     <form action="/editCart" method="POST">
-                        <p><b>Product Name:</b> <%= o.productName%></p>
+                        <p><b>ID:</b> <%= o.productID%></p>
+                        <p><b>Name:</b> <%= o.productName%></p>
                         <p><b>Price:</b> <%= o.price%></p>
                         <div>
                             <input type="hidden" name="productID" value="<%= o.productID%>">
@@ -102,7 +103,6 @@
                 </div>
             <!--Xóa hàng ra khỏi giỏ-->
                 <div id="remove" class="col-sm-6">
-                    <p><b>ProductID:</b> <%= o.productID%></p>
                     <img src="<%= o.image%>">
                     <br><br>
                     <form action="/removeFromCart" method="POST">
@@ -110,8 +110,8 @@
                         <input type="submit" value="Remove">
                     </form>
                 </div>
-            </div></div><hr/>
-        </div>
+            </div></div>
+        </div><hr/>
         <% }) %>
         </div>
     </div>
