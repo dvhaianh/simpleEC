@@ -1,13 +1,14 @@
 <%include top%>
 
+<!--Khung tìm kiếm-->
 <div class="container text-center"><div class="row">
-    <div class="col-sm-7"><p>
+    <div class="col-sm-6"><p>
         <h2><%= header%> (<%= data.length%>)</h2>
         <a href="/admin/products/add">Add more</a>
     </p></div>
-    <form action="/admin/products/find" method="GET" class="col-sm-5">
+    <form action="/admin/products/find" method="GET" class="col-sm-6">
         <br>
-        <input type="text" name="infor" placeholder="Find by productID, productName" list="product">
+        <input type="text" name="infor" placeholder="Find by productID, productName" list="product"  style="width: 70%;">
         <datalist id="product">
         <% Products.forEach(p => { %>
             <option value="<%= p.productName%>"></option>
@@ -20,33 +21,36 @@
         <input type="submit" value="Find">
     </form>
 </div><hr></div>
+
+<!--Danh sách sản phẩm-->
 <ol>
 <div class="container"><div class="row">
 <% data.forEach(p => { %>
-    <li class="col-sm-6">
+    <li class="col-sm-4">
         <div class="container"><div class="row">
-            <div class="col-sm-6">
-                <p><b>Product ID:</b> <%= p.productID%></p>
-                <p><b>Product Name:</b> <%= p.productName%></p>
-                <p><b>Price:</b> <%= p.price%></p>
-            </div>
             <div class="col-sm-6 text-center">
                 <img src="<%= p.image%>">
             </div>
+            <div class="col-sm-6">
+                <p><b>ID:</b> <%= p.productID%></p>
+                <p><b>Name:</b> <%= p.productName%></p>
+                <p><b>Price:</b> <%= p.price%></p>
+            </div>
         </div></div>
-        <div class="container"><div class="row"> 
-            <div class="col-sm"></div>
-            </form><form action="/admin/products/edit" class="col-sm text-center" method="GET">
+        <div class="container"><div class="row text-center"> 
+        <!--Sửa thông tin sản phẩm-->
+            </form><form action="/admin/products/edit" method="GET">
                 <input type="hidden" name="productID" value="<%= p.productID%>">
                 <input type="submit" value="Edit">
             </form>
-            <form action="/admin/products/delete" class="col-sm text-center" method="POST">
+        <!--Xóa sản phẩm-->
+            <form action="/admin/products/delete" method="POST">
                 <input type="hidden" name="productID" value="<%= p.productID%>">
                 <input type="submit" value="Delete">
             </form>
             <div class="col-sm"></div>
         </div></div>
-        <hr>
+        <hr style="width: 70%;">
     </li>
 <% }) %>
 </div></div>

@@ -1,26 +1,50 @@
 <%include top%>
 
+<!--Khung tìm kiếm-->
 <div class="container text-center"><div class="row">
-    <div class="col-sm-8"><p>
-        <h2>All orders (<%= data.length%>)</h2>
+    <div class="col-sm-6"><p>
+        <h2><%= header%> (<%= data.length%>)</h2>
     </p></div>
-    <form action="" method="" class="col-sm-4">
+    <form action="/admin/orders/find" method="GET" class="col-sm-6">
         <br>
-        <input type="text" name="infor">
+        <input type="text" name="infor" list="order" placeholder="Find by status, username, orderID" style="width: 70%;">
+        <datalist id="order">
+            <option value="making"></option>
+            <option value="shipping"></option>
+            <option value="complete"></option>
+            <option value="cancel"></option>
+        <% Orders.forEach(o => { %>
+            <option value="<%= o.username%>"></option>
+        <% }) %>
+        <% Orders.forEach(o => { %>
+            <option value="<%= o.orderID%>"></option>
+        <% }) %>
+        </datalist>
         <input type="submit" value="Find">
     </form>
 </div><hr></div>
+
+<!--Danh sách đơn hàng đã đặt-->
 <ol><div class="container"><div class="row">
 <% data.forEach(o => { %>
     <li class="col-sm-4">
         <p><a href="/admin/readOrder?orderID=<%= o.orderID%>"><%= o.orderID%></a></p>
         <p>Total money: <%= o.money%></p>
         <p>Status: <%= o.status%></p>
+        <div class="container"><div class="row text-center">
+        <!--Xóa đơn hàng-->
+            <form action="/admin/orders/delete" method="POST">
+                <input type="hidden" name="orderID" value="<%= o.orderID%>">
+                <input type="submit" value="Delete">
+            </form>
+        <!--Chuyển trạng thái sang giai đoạn tiếp theo-->
         <% if(o.status !== "cancel" && o.status !== "complete"){ %>
-        <form action="" method="POST">
-            <input type="hidden" name="orderID" value="<%= o.orderID%>">
-            <input type="submit" value="Change Status">
-        </form>
+            <form action="/admin/orders/nextStep" method="POST">
+                <input type="hidden" name="orderID" value="<%= o.orderID%>">
+                <input type="submit" value="Next step">
+            </form>
+        </div></div>
+        <hr style="width: 70%;">
         <% } %>
     </li>
 <% }) %>,

@@ -1,3 +1,4 @@
+const { order } = require('../middlewares/validation');
 const orders = require('../models/orders');
 const products = require('../models/products');
 
@@ -166,6 +167,8 @@ module.exports.listing = async (req, res) => {
     try {
         const orderList = await orders.listing();
         res.render('admin/orders', {
+            header: "All orders",
+            Orders: orderList,
             data: orderList
         });
         return;
@@ -175,28 +178,26 @@ module.exports.listing = async (req, res) => {
         });
         return;
     }
-}   //
+}   //OK
 
 module.exports.finding = async (req, res) => {
-    if (req.User.auth !== "admin") {
-        res.json({
-            message: `You are not authorized`
-        });
-        return;
+    const { infor } = req.query;
+    if(infor === ""){
+        res.redirect('/admin/orders');
     }
-    const { infor } = req.body;
     try {
         const listFind = await orders.finding(infor);
-        if (listFind) {
+        const Orders = await orders.listing();
+        if (!listFind) {
             res.json({
-                message: 'success',
-                amount: listFind.length,
-                data: listFind
+                message: `Order is not found`
             });
             return;
         } else {
-            res.json({
-                message: `Order is not found`
+            res.render('admin/orders', {
+                header: "Find order",
+                Orders,
+                data: listFind
             });
             return;
         }
@@ -206,30 +207,24 @@ module.exports.finding = async (req, res) => {
         });
         return;
     }
-}   //
+}   //OK
 
 module.exports.status = async (req, res) => {
-    if (req.User.auth !== "admin") {
-        res.json({
-            message: `You are not authorized`
-        });
-        return;
-    }
-    const user = req.User.user;
-    const { orderID } = req.params;
+    const { orderID } = req.body;
     try {
         const order = await orders.finding(orderID);
-        if (order) {
-            const { status } = req.body
-            await orders.status(orderID, status);
-            res.json({
-                message: `Success`
-            });
-            return;
-        } else {
+        if (!order){
             res.json({
                 message: `Order is not found`
             });
+            return;
+        } else {
+            if(order[0].status === "making"){
+                await orders.status(orderID, "shipping");
+            } else {
+                await orders.status(orderID, "complete");
+            }
+            res.redirect('/admin/orders');
             return;
         }
     } catch (error) {
@@ -241,19 +236,11 @@ module.exports.status = async (req, res) => {
 }   //
 
 module.exports.delete = async (req, res) => {
-    if (req.User.auth !== "admin") {
-        res.json({
-            message: `You are not authorized`
-        });
-        return;
-    }
-    const { orderID } = req.params;
+    const { orderID } = req.body;
     try {
         if (await orders.finding(orderID)) {
             await orders.delete(orderID);
-            res.json({
-                message: 'Success'
-            });
+            res.redirect('/admin/orders');
             return;
         } else {
             res.json({

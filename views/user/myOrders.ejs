@@ -1,6 +1,7 @@
 <%include top%>
-<div class="container"><div class="row text-center
-    ">
+
+<!--Khung tìm kiếm-->
+<div class="container"><div class="row text-center">
     <h2 class="col-sm-12">All my orders</h2>
     <div class="col-sm-2"></div>
     <form action="/users/find" class="col-sm-8">
@@ -20,21 +21,25 @@
     </form>
     <div class="col-sm-2"></div>
 </div></div><br>
+
+<!--Danh sách đơn hàng-->
 <ol>
-<div class="container"><div class="row">
-<% data.forEach(o => { %>
-    <li class="col-sm-4">
-        <p><a href="/users/readOrder?orderID=<%= o.orderID%>"><%= o.orderID%></a></p>
-        <p>Total money: <%= o.money%></p>
-        <p>Status: <%= o.status%></p>
-        <% if(o.status !== "cancel"){ %>
-        <form action="/users/cancel" method="POST">
-            <input type="hidden" name="orderID" value="<%= o.orderID%>">
-            <input type="submit" value="Cancel">
-        </form>
-        <% } %>
-    </li>
-<% }) %>
-</div></div></ol>
+    <div class="container"><div class="row">
+    <% data.forEach(o => { %>
+        <li class="col-sm-4">
+            <p><a href="/users/readOrder?orderID=<%= o.orderID%>"><%= o.orderID%></a></p>
+            <p>Total money: <%= o.money%></p>
+            <p>Status: <%= o.status%></p>
+            <% if(o.status !== "cancel" && o.status !== "complete"){ %>
+        <!--Hủy đơn-->
+            <form action="/users/cancel" method="POST">
+                <input type="hidden" name="orderID" value="<%= o.orderID%>">
+                <input type="submit" value="Cancel">
+            </form>
+            <% } %>
+        </li>
+    <% }) %>
+    </div></div>
+</ol>
 
 <%include bot-%>

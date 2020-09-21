@@ -45,7 +45,6 @@ module.exports.finding = input => {
                 { status: input }
             ]
         })
-        .sort("orderID")
         .then(doc => {
             if (doc.length > 0) return doc;
         });
@@ -108,9 +107,8 @@ module.exports.status = (orderID, status) => {
 
 //Delete
 module.exports.delete = orderID => {
-    orders.findOneAndDelete(orderID)
-        .exec();
-}
+    orders.findOneAndDelete({orderID}).exec();
+}   //OK
 
 module.exports.deleteUser = username => {
     orders.deleteMany({username}).exec();

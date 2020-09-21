@@ -170,6 +170,7 @@ module.exports.listing = async (req, res) => {
         const listAcc = await accs.listing();
         res.render('admin/users', {
             header: "All users",
+            Accs: listAcc,
             data: listAcc
         });
         return;
@@ -184,7 +185,8 @@ module.exports.listing = async (req, res) => {
 module.exports.finding = async (req, res) => {
     const { infor } = req.query;
     try {
-        const acc = await accs.finding(infor)
+        const acc = await accs.finding(infor);
+        const Accs = await accs.listing();
         if (!acc) {
             res.json({
                 message: `Information not found`
@@ -193,6 +195,7 @@ module.exports.finding = async (req, res) => {
         } else {
             res.render('admin/users', {
                 header: "Find user",
+                Accs,
                 data: acc
             });
             return;

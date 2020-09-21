@@ -1,21 +1,22 @@
 <%include top%>
 
+<!--Khung tìm kiếm-->
 <div class="container text-center"><div class="row">
-    <div class="col-sm-7"><p>
+    <div class="col-sm-6"><p>
         <h2><%= header%> (<%= data.length%>)</h2>
     </p></div>
-    <form action="/admin/users/find" method="GET" class="col-sm-5">
+    <form action="/admin/users/find" method="GET" class="col-sm-6">
         <br>
         <div class="container"><div class="row">
-            <input class="col-sm-10" type="text" name="infor" placeholder="find by username, fullname, email" list="account">
+            <input class="col-sm-10" type="text" name="infor" placeholder="find by username, fullname, email" list="account" style="width: 70%;">
             <datalist id="account">
-                <% data.forEach(a => { %>
+                <% Accs.forEach(a => { %>
                     <option value="<%= a.username%>"></option>
                 <% }) %>
-                <% data.forEach(a => { %>
+                <% Accs.forEach(a => { %>
                     <option value="<%= a.fullname%>"></option>
                 <% }) %>
-                <% data.forEach(a => { %>
+                <% Accs.forEach(a => { %>
                     <option value="<%= a.email%>"></option>
                 <% }) %>
             </datalist>
@@ -23,12 +24,15 @@
         </div></div>
     </form>
 </div><hr></div>
+
+<!--Danh sách user-->
 <ol><div class="container"><div class="row">
 <% data.forEach(a => { %>
     <li class="col-sm-4">
         <p><a href="/admin/userRead?username=<%= a.username%>"><%= a.username%></a></p>
         <p>Fullname: <%= a.fullname%></p>
         <p>Email: <%= a.email%></p>
+    <!--Xóa user-->
         <% if(a.authorization !== "admin"){ %>
         <form action="/admin/users/delete" method="POST">
             <input type="hidden" name="username" value="<%= a.username%>">

@@ -24,12 +24,14 @@ router.get('/information', accs.reading);
 //OK
 router.post('/changeInformation', accs.changeInfor);
 
+//OK
 router.get('/changePassword', (req, res) => {
     res.render('user/changePassword', {
         user: req.user
     });
 });
 
+//OK
 router.post('/changePassword', accs.changePwd);
 
 module.exports = router;

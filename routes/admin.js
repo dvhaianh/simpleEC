@@ -6,9 +6,10 @@ const orders = require('../controllers/orders');
 
 const validation = require('../middlewares/validation');
 
+//OK
 router.get('/', (req, res) => {
     res.render('admin/index');
-}); //OK
+});
 
 //OK
 router.get('/users', accs.listing);
@@ -42,6 +43,7 @@ router.post('/products/delete', products.deleting);
 //OK
 router.get('/products/edit', products.editor);
 
+//OK
 router.post('/products/edit', products.editing);
 
 //OK
@@ -49,5 +51,14 @@ router.get('/orders', orders.listing);
 
 //OK
 router.get('/orderRead', orders.reading);
+
+//OK
+router.get('/orders/find', orders.finding);
+
+//OK
+router.post('/orders/delete', orders.delete);
+
+//OK
+router.post('/orders/nextStep', orders.status);
 
 module.exports = router;

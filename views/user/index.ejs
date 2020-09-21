@@ -1,5 +1,6 @@
 <%include top%>
 
+<!--Khung tìm kiếm sản phẩm-->
 <div class="container">
 <div class="row">
     <div class="col-sm-2"></div>
@@ -25,7 +26,7 @@
 
 <div class="container">
 <div class="row">
-<!--List Product-->
+<!--Danh sách sản phẩm-->
     <div id="left" class="col-sm-8">
     <div class="container">
         <h2 class="text-center">Products (<%= data.length%>)</h2>
@@ -55,11 +56,11 @@
     </div>
     </div>
     </div>
-<!--Shopping Cart-->
+<!--Giỏ hàng-->
     <div id="right" class="col-sm-4 border-primary">
     <div class="container">
-        <!--TOP-->
         <h2 class="text-center">Shopping cart (<%= cart.length%>)</h2>
+    <!--Tính tiền đơn hàng hiện tại-->
         <%
         let orderdetail = [];
         let money = 0;
@@ -82,13 +83,11 @@
             </form>
         </div>
         <hr>
-        <div class="row">
+    <!--Danh sách hàng trong giỏ-->
+        <div class="row text-center col-sm-12">
         <% cart.forEach(o => { %>
-            <div class="text-center col-sm-12">
-            <div class="container">
-            <div class="row">
-                <br>
-                <!--EDIT-->
+            <div class="container"><div class="row"><br>
+            <!--Sửa giỏ hàng-->
                 <div id="edit" class="col-sm-6">
                     <form action="/editCart" method="POST">
                         <p><b>Product Name:</b> <%= o.productName%></p>
@@ -101,7 +100,7 @@
                         </div>
                     </form>
                 </div>
-                <!--REMOVE-->
+            <!--Xóa hàng ra khỏi giỏ-->
                 <div id="remove" class="col-sm-6">
                     <p><b>ProductID:</b> <%= o.productID%></p>
                     <img src="<%= o.image%>">
@@ -111,10 +110,8 @@
                         <input type="submit" value="Remove">
                     </form>
                 </div>
-            </div>
-            </div>
-            <hr/>
-            </div>
+            </div></div><hr/>
+        </div>
         <% }) %>
         </div>
     </div>

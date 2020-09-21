@@ -145,7 +145,7 @@ module.exports.editing = async (req, res) => {
         });
         return;
     }
-};  //
+};  //OK
 
 module.exports.deleting = async (req, res) => {
     const {productID} = req.body;
