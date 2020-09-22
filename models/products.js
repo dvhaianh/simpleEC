@@ -1,5 +1,15 @@
+/**
+ * Modules.
+ */
 const mongoose = require('mongoose');
 
+/**
+ * Schema:
+ *      productID:      Mã sản phẩm.
+ *      productName:    Tên sản phẩm.
+ *      price:          Giá bán một sản phẩm.
+ *      image:          Đường dẫn đến hình ảnh sản phẩm.
+ */
 const PRODUCT = new mongoose.Schema({
     productID: {
         type: String,
@@ -20,9 +30,14 @@ const PRODUCT = new mongoose.Schema({
     }
 });
 
+/**
+ * Model.
+ */
 const products = mongoose.model('products', PRODUCT, 'products');
 
-//List
+/**
+ * Liệt kê danh sách sản phẩm.
+ */
 module.exports.listing = () => {
     return products
         .find()
@@ -30,9 +45,12 @@ module.exports.listing = () => {
         .then(doc => {
             return doc;
         });
-}
+};
 
-//Find
+/**
+ * Tìm kiếm sản phẩm.
+ * @param {String} input Thông tin sản phẩm (mã, tên sản phẩm).
+ */
 module.exports.finding = input => {
     return products
         .find({$or: [
@@ -42,9 +60,12 @@ module.exports.finding = input => {
         .then(doc => {
             if(doc.length > 0) return doc;
         });
-}
+};
 
-//Add
+/**
+ * Thêm sản phẩm mới.
+ * @param {Object} input Thông tin về sản phẩm thêm mới.
+ */
 module.exports.adding = input => {
     const newProduct = new products({
         productID: input.productID,
@@ -53,9 +74,13 @@ module.exports.adding = input => {
         image: input.image
     });
     newProduct.save();
-}
+};
 
-//Edit
+/**
+ * Thay đổi thông tin sản phẩm.
+ * @param {String} productID Mã sản phẩm.
+ * @param {Object} infor Thông tin thay đổi.
+ */
 module.exports.editing = (productID, infor) => {
     products.findOneAndUpdate(
         {productID},
@@ -65,16 +90,23 @@ module.exports.editing = (productID, infor) => {
             image: infor.image
         }
     ).exec();
-}
+};
 
-//Delete
+/**
+ * Xóa sản phẩm.
+ * @param {String} productID 
+ */
 module.exports.delete = productID => {
     products.findOneAndDelete({productID}).exec();
-}
+};
 
+/**
+ * Lấy ra giá bán của sản phẩm.
+ * @param {String} productID 
+ */
 module.exports.getPrice = productID => {
     return products.findOne({productID})
         .then(doc => {
             if(doc) return doc.price;
         });
-}
+};

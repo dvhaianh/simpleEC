@@ -1,7 +1,13 @@
-const { order } = require('../middlewares/validation');
+/**
+ * Modules.
+ */
 const orders = require('../models/orders');
 const products = require('../models/products');
 
+/**
+ * Tính tổng tiền của đơn hàng.
+ * @param {array} orderdetail Chi tiết đơn hàng.
+ */
 async function moneyCaculate(orderdetail) {
     let res = 0;
     for (let index in orderdetail) {
@@ -10,9 +16,11 @@ async function moneyCaculate(orderdetail) {
         res += price * quantity;
     }
     return res;
-}
+};
 
-//USER
+/**
+ * Người dùng liệt kê danh sách đơn hàng của mình.
+ */
 module.exports.myListing = async (req, res) => {
     const username = req.user.user;
     if (!username) {
@@ -40,8 +48,11 @@ module.exports.myListing = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Xem thông tin đơn hàng.
+ */
 module.exports.reading = async (req, res) => {
     const username = req.user.user;
     if (!username) {
@@ -76,8 +87,11 @@ module.exports.reading = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Thêm đơn hàng mới - Mua hàng.
+ */
 module.exports.adding = async (req, res) => {
     const username = req.user.user;
     if (!username) {
@@ -110,8 +124,11 @@ module.exports.adding = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Hủy đơn.
+ */
 module.exports.cancel = async (req, res) => {
     const username = req.user.user;
     if (!username) {
@@ -137,8 +154,11 @@ module.exports.cancel = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Người dùng tìm kiếm trong các đơn hàng của mình.
+ */
 module.exports.findMine = async (req, res) => {
     const username = req.user.user,
         { infor } = req.query;
@@ -160,9 +180,11 @@ module.exports.findMine = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
-//ADMIN
+/**
+ * Liệt kê tất cả đơn hàng.
+ */
 module.exports.listing = async (req, res) => {
     try {
         const orderList = await orders.listing();
@@ -178,8 +200,11 @@ module.exports.listing = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Tìm kiếm đơn hàng.
+ */
 module.exports.finding = async (req, res) => {
     const { infor } = req.query;
     if(infor === ""){
@@ -207,8 +232,11 @@ module.exports.finding = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Thay đổi trạng thái đơn hàng.
+ */
 module.exports.status = async (req, res) => {
     const { orderID } = req.body;
     try {
@@ -233,8 +261,11 @@ module.exports.status = async (req, res) => {
         });
         return;
     }
-}   //
+};
 
+/**
+ * Xóa đơn hàng.
+ */
 module.exports.delete = async (req, res) => {
     const { orderID } = req.body;
     try {
@@ -254,4 +285,4 @@ module.exports.delete = async (req, res) => {
         });
         return;
     }
-}   //
+};

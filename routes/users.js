@@ -1,37 +1,61 @@
+/**
+ * Modules.
+ */
 const router = require('express').Router();
 
+/**
+ * Controllers.
+ */
 const accs = require('../controllers/accounts');
 const orders = require('../controllers/orders');
 
-//OK
+/**
+ * Mua các sản phẩm trong giỏ hàng.
+ */
 router.post('/buy', orders.adding);
 
-//OK
+/**
+ * Xem chi tiết đơn đặt hàng.
+ */
 router.get('/readOrder', orders.reading);
 
-//OK
+/**
+ * User xem danh sách các đơn đặt hàng của họ.
+ */
 router.get('/myOrders', orders.myListing);
 
-//OK
+/**
+ * Hủy đơn hàng.
+ */
 router.post('/cancel', orders.cancel);
 
-//OK
+/**
+ * Tìm kiếm đơn hàng.
+ */
 router.get('/find', orders.findMine)
 
-//OK
+/**
+ * Xem thông tin cá nhân.
+ */
 router.get('/information', accs.reading);
 
-//OK
+/**
+ * Thay đổi thông tin cá nhân.
+ */
 router.post('/changeInformation', accs.changeInfor);
 
-//OK
+/**
+ * Chuyển sang trang đổi mật khẩu.
+ */
 router.get('/changePassword', (req, res) => {
     res.render('user/changePassword', {
         user: req.user
     });
 });
 
-//OK
+/**
+ * Đổi mật khẩu.
+ */
 router.post('/changePassword', accs.changePwd);
 
 module.exports = router;

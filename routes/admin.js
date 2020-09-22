@@ -6,59 +6,93 @@ const orders = require('../controllers/orders');
 
 const validation = require('../middlewares/validation');
 
-//OK
+/**
+ * Chuyển sang trang chủ cho admin.
+ */
 router.get('/', (req, res) => {
     res.render('admin/index');
 });
 
-//OK
+/**
+ * Xem danh sách tài khoản người dùng trong hệ thống.
+ */
 router.get('/users', accs.listing);
 
-//OK
+/**
+ * Xem chi tiết tài khoản người dùng.
+ */
 router.get('/userRead', accs.reading);
 
-//OK
+/**
+ * Xóa tài khoản người dùng khỏi hệ thống.
+ */
 router.post('/users/delete', accs.delete);
 
-//OK
+/**
+ * Tìm kiếm tài khoản người dùng.
+ */
 router.get('/users/find', accs.finding);
 
-//OK
+/**
+ * Xem danh sách sản phẩm trong hệ thống.
+ */
 router.get('/products', products.listing);
 
-//OK
+/**
+ * Tìm kiếm sản phẩm trong hệ thống.
+ */
 router.get('/products/find', products.finding);
 
-//OK
+/**
+ * Chuyển sang trang thêm sản phẩm.
+ */
 router.get('/products/add', (req, res) => {
     res.render('admin/productAdd');
 });
 
-//OK
+/**
+ * Thêm sản phẩm vào hệ thống.
+ */
 router.post('/products/add', validation.product, products.adding);
 
-//OK
+/**
+ * Xóa sản phẩm ra khỏi hệ thống.
+ */
 router.post('/products/delete', products.deleting);
 
-//OK
+/**
+ * Chuyển sang trang chỉnh sửa sản phẩm.
+ */
 router.get('/products/edit', products.editor);
 
-//OK
+/**
+ * Chỉnh sửa sản phẩm.
+ */
 router.post('/products/edit', products.editing);
 
-//OK
+/**
+ * Xem danh sách đơn hàng.
+ */
 router.get('/orders', orders.listing);
 
-//OK
+/**
+ * Xem chi tiết đơn hàng.
+ */
 router.get('/orderRead', orders.reading);
 
-//OK
+/**
+ * Tìm kiếm đơn hàng.
+ */
 router.get('/orders/find', orders.finding);
 
-//OK
+/**
+ * Xóa đơn hàng.
+ */
 router.post('/orders/delete', orders.delete);
 
-//OK
+/**
+ * Chuyển trạng thái đơn hàng sang bước tiếp theo.
+ */
 router.post('/orders/nextStep', orders.status);
 
 module.exports = router;

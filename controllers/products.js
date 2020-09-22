@@ -1,5 +1,8 @@
 const products = require('../models/products');
 
+/**
+ * Danh sách sản phẩm có trong hệ thống.
+ */
 module.exports.listing = async (req, res) => {
     if(!req.session.cart){
         req.session.cart = [];
@@ -27,8 +30,11 @@ module.exports.listing = async (req, res) => {
         });
         return;
     }
-};  //OK
+};
 
+/**
+ * Tìm kiếm sản phẩm.
+ */
 module.exports.finding = async (req, res) => {
     const {infor} = req.query;
     if(infor == ""){
@@ -72,8 +78,11 @@ module.exports.finding = async (req, res) => {
         });
         return;
     }
-};  //OK
+};
 
+/**
+ * Thêm sản phẩm.
+ */
 module.exports.adding = async (req, res) => {
     const {productID, productName, price, image} = req.body;
     const infor = {
@@ -100,8 +109,11 @@ module.exports.adding = async (req, res) => {
         });
         return;
     }
-};  //OK
+};
 
+/**
+ * Chuyển hướng sang trang sửa sản phẩm.
+ */
 module.exports.editor = async (req, res) => {
     const {productID} = req.query;
     try {
@@ -118,8 +130,11 @@ module.exports.editor = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Chỉnh sửa sản phẩm.
+ */
 module.exports.editing = async (req, res) => {
     const productID = req.body.productID;
     const infor = {
@@ -145,8 +160,11 @@ module.exports.editing = async (req, res) => {
         });
         return;
     }
-};  //OK
+};
 
+/**
+ * Xóa sản phẩm.
+ */
 module.exports.deleting = async (req, res) => {
     const {productID} = req.body;
     try {
@@ -166,4 +184,4 @@ module.exports.deleting = async (req, res) => {
         });
         return;
     }
-};  //OK
+};

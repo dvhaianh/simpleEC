@@ -1,3 +1,6 @@
+/**
+ * Thêm hàng vào giỏ.
+ */
 module.exports.add = async (req, res) => {
     const productID = req.body.productID,
         quantity = parseInt(req.body.quantity),
@@ -29,8 +32,11 @@ module.exports.add = async (req, res) => {
     req.session.cart = cart;
     res.redirect('/');
     return;
-}   //OK
+};
 
+/**
+ * Xóa hàng ra khỏi giỏ.
+ */
 module.exports.remove = async (req, res) => {
     const productID = req.body.productID;
     for (let index in req.session.cart) {
@@ -40,8 +46,11 @@ module.exports.remove = async (req, res) => {
     }
     res.redirect('/');
     return;
-}   //OK
+};
 
+/**
+ * Chỉnh sửa đơn hàng.
+ */
 module.exports.edit = async (req, res) => {
     const productID = req.body.productID,
           quantity = req.body.quantity;
@@ -58,4 +67,4 @@ module.exports.edit = async (req, res) => {
     }
     res.redirect('/');
     return;
-}
+};

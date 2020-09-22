@@ -1,13 +1,24 @@
+/**
+ * Modules.
+ */
 const express = require('express');
 const router = express.Router();
 
+/**
+ * Middlewares.
+ */
+const validation = require('../middlewares/validation');
+
+/**
+ * Controllers.
+ */
 const products = require('../controllers/products');
 const accs = require('../controllers/accounts');
 const cart = require('../controllers/cart');
 
-const validation = require('../middlewares/validation');
-
- //Home             OK
+ /**
+  * Chuyển sang trang chủ.
+  */
 router.get('/', (req, res) => {
     if(req.user.auth === "admin"){
         res.redirect('/admin');
@@ -18,16 +29,26 @@ router.get('/', (req, res) => {
     }
 });
 
+/**
+ * Chuyển sang trang chủ cho người dùng.
+ */
 router.get('/index', products.listing);
 
-//Register          OK
+/**
+ * Chuyển sang trang đăng ký tài khoản.
+ */
 router.get('/register', (req, res) => {
     res.render('register');
-}); //OK
+});
 
+/**
+ * Đăng ký tài khoản mới.
+ */
 router.post('/register', validation.register, accs.register);
 
-//Login             OK
+/**
+ * Chuyển sang trang đăng nhập.
+ */
 router.get('/login', (req, res) => {
     if(req.session.token){
         res.json({
@@ -37,26 +58,39 @@ router.get('/login', (req, res) => {
     } else {
         res.render('login')
     }
-}); //OK
+});
 
+/**
+ * Đăng nhập vào hệ thống.
+ */
 router.post('/login', validation.login, accs.login);
 
-//Logout            OK
+/**
+ * Đăng xuất khỏi hệ thống.
+ */
 router.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/');
-}); //OK
+});
 
-//Find product      OK
+/**
+ * Tìm kiếm sản phẩm.
+ */
 router.get('/find', products.finding);
 
-//Add to cart       OK
+/**
+ * Thêm sản phẩm vào giỏ hàng.
+ */
 router.post('/addToCart', cart.add);
 
-//Remove from cart  OK
+/**
+ * Xóa sản phẩm ra khỏi giỏ hàng.
+ */
 router.post('/removeFromCart', cart.remove);
 
-//Edit cart
+/**
+ * Chỉnh sửa giỏ hàng.
+ */
 router.post('/editCart', cart.edit)
 
 module.exports = router;

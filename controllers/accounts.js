@@ -1,9 +1,18 @@
+/**
+ * Modules.
+ */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+/**
+ * Controllers.
+ */
 const accs = require('../models/accounts');
 const orders = require('../models/orders');
 
+/**
+ * Đăng ký tài khoản.
+ */
 module.exports.register = async (req, res) => {
     const decode = await bcrypt.genSalt(13);
     const acc = {
@@ -40,8 +49,11 @@ module.exports.register = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Đăng nhập.
+ */
 module.exports.login = async (req, res) => {
     const { username, password } = req.body;
     try {
@@ -90,8 +102,11 @@ module.exports.login = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Thay đổi thông tin tài khoản.
+ */
 module.exports.changeInfor = async (req, res) => {
     const username = req.user.user;
     const { fullname, email } = req.body;
@@ -121,8 +136,11 @@ module.exports.changeInfor = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Đổi mật khẩu.
+ */
 module.exports.changePwd = async (req, res) => {
     const username = req.user.user;
     const { currentPassword, newPassword } = req.body;
@@ -163,8 +181,11 @@ module.exports.changePwd = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Liệt kê danh sách tài khoản.
+ */
 module.exports.listing = async (req, res) => {
     try {
         const listAcc = await accs.listing();
@@ -180,8 +201,11 @@ module.exports.listing = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Tìm kiếm tài khoản.
+ */
 module.exports.finding = async (req, res) => {
     const { infor } = req.query;
     try {
@@ -206,8 +230,11 @@ module.exports.finding = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Xem thông tin tài khoản.
+ */
 module.exports.reading = async (req, res) => {
     const { username } = req.query;
     try {
@@ -230,8 +257,11 @@ module.exports.reading = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
 
+/**
+ * Xóa tài khoản.
+ */
 module.exports.delete = async (req, res) => {
     const { username } = req.body;
     try {
@@ -252,4 +282,4 @@ module.exports.delete = async (req, res) => {
         });
         return;
     }
-}   //OK
+};
