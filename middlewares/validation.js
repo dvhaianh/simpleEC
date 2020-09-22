@@ -1,5 +1,11 @@
+/**
+ * Modules.
+ */
 const joi = require('@hapi/joi');
 
+/**
+ * Schema.
+ */
 const schema = {
     register: joi.object({
         username:   joi.string()
@@ -40,8 +46,11 @@ const schema = {
         orderdetail:joi.string()
                     .required(),
     })
-}
+};
 
+/**
+ * Kiểm tra định dạng thông tin đăng ký.
+ */
 module.exports.register = async (req, res, next) => {
     const value = await schema.register.validate(req.body);
     if(value.error){
@@ -50,8 +59,11 @@ module.exports.register = async (req, res, next) => {
         });
         return;
     } else next();
-}
+};
 
+/**
+ * Kiểm tra định dạng thông tin đăng nhập.
+ */
 module.exports.login = async (req, res, next) => {
     const value = await schema.login.validate(req.body);
     if(value.error){
@@ -60,8 +72,11 @@ module.exports.login = async (req, res, next) => {
         });
         return;
     } else next();
-}
+};
 
+/**
+ * Kiểm tra định dạng thông tin sản phẩm.
+ */
 module.exports.product = async (req, res, next) => {
     const value = await schema.product.validate(req.body);
     if(value.error){
@@ -70,8 +85,11 @@ module.exports.product = async (req, res, next) => {
         });
         return;
     } else next();
-}
+};
 
+/**
+ * Kiểm tra định dạng thông tin đơn hàng.
+ */
 module.exports.order = async (req, res, next) => {
     const value = await schema.order.validate(req.body);
     if(value.error){
@@ -80,4 +98,4 @@ module.exports.order = async (req, res, next) => {
         });
         return;
     } else next();
-}
+};

@@ -1,6 +1,12 @@
+/**
+ * Modules.
+ */
 const jwt = require('jsonwebtoken');
 
-module.exports.login = async (req, res, next) => {
+/**
+ * Kiểm tra đăng nhập.
+ */
+module.exports.guest = async (req, res, next) => {
     const token = req.session.token;
     if(!token) {
         req.user = {
@@ -17,6 +23,21 @@ module.exports.login = async (req, res, next) => {
     next();
 };
 
+/**
+ * Kiểm tra quyền người dùng.
+ */
+module.exports.user = async (req, res, next) => {
+    const token = req.session.token;
+    if(!token) {
+        res.redirect('/login');
+        return;
+    }
+    next();
+}
+
+/**
+ * Kiểm tra quyền admin.
+ */
 module.exports.admin = async (req, res, next) => {
     const token = req.session.token;
     if(!token) {
@@ -30,4 +51,4 @@ module.exports.admin = async (req, res, next) => {
         return;
     }
     next();
-}
+};

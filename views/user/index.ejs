@@ -90,7 +90,6 @@
             <!--Sửa giỏ hàng-->
                 <div id="edit" class="col-sm-6">
                     <form action="/editCart" method="POST">
-                        <p><b>ID:</b> <%= o.productID%></p>
                         <p><b>Name:</b> <%= o.productName%></p>
                         <p><b>Price:</b> <%= o.price%></p>
                         <div>
@@ -103,6 +102,7 @@
                 </div>
             <!--Xóa hàng ra khỏi giỏ-->
                 <div id="remove" class="col-sm-6">
+                    <p><b>ID:</b> <%= o.productID%></p>
                     <img src="<%= o.image%>">
                     <br><br>
                     <form action="/removeFromCart" method="POST">

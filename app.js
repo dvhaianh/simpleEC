@@ -47,8 +47,8 @@ app.use(session({
   saveUninitialized: false,
 }));
 
-app.use('/', authentication.login, indexRouter);
-app.use('/users', authentication.login, usersRouter);
+app.use('/', authentication.guest, indexRouter);
+app.use('/users', authentication.user, usersRouter);
 app.use('/admin', authentication.admin, adminRouter);
 
 // catch 404 and forward to error handler
