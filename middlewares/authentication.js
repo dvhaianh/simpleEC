@@ -1,6 +1,3 @@
-/**
- * Modules.
- */
 const jwt = require('jsonwebtoken');
 
 /**

@@ -1,6 +1,3 @@
-/**
- * Modules.
- */
 const mongoose = require('mongoose');
 
 /**
@@ -35,9 +32,6 @@ const ORDER = new mongoose.Schema({
     }
 });
 
-/**
- * Models.
- */
 const orders = mongoose.model('orders', ORDER, 'orders');
 
 /**
@@ -45,7 +39,6 @@ const orders = mongoose.model('orders', ORDER, 'orders');
  */
 module.exports.listing = () => {
     return orders.find()
-        .sort("orderID")
         .then(doc => {
             return doc;
         });

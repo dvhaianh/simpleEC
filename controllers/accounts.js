@@ -120,7 +120,6 @@ module.exports.changeInfor = async (req, res) => {
                 return;
             } else {
                 await accs.changeInfo(username, { fullname, email });
-                const acc = await accs.finding(username);
                 res.redirect('/users/information?username=' + username);
                 return;
             }

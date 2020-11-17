@@ -1,6 +1,3 @@
-/**
- * Modules.
- */
 const joi = require('@hapi/joi');
 
 /**

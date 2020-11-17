@@ -1,6 +1,3 @@
-/**
- * Modules.
- */
 const mongoose = require('mongoose');
 
 /**
@@ -50,9 +47,6 @@ const ACCOUNT = new mongoose.Schema({
     }
 });
 
-/**
- * Model.
- */
 const accs = mongoose.model('accounts', ACCOUNT, 'accounts');
 
 /**

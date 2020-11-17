@@ -23,10 +23,6 @@ async function moneyCaculate(orderdetail) {
  */
 module.exports.myListing = async (req, res) => {
     const username = req.user.user;
-    if (!username) {
-        res.redirect('/login');
-        return;
-    };
     try {
         const myList = await orders.finding(username);
         if (myList) {
@@ -54,11 +50,6 @@ module.exports.myListing = async (req, res) => {
  * Xem thông tin đơn hàng.
  */
 module.exports.reading = async (req, res) => {
-    const username = req.user.user;
-    if (!username) {
-        res.redirect('/login');
-        return;
-    };
     const orderID = req.query.orderID;
     try {
         const order = await orders.reading(orderID);
@@ -94,10 +85,6 @@ module.exports.reading = async (req, res) => {
  */
 module.exports.adding = async (req, res) => {
     const username = req.user.user;
-    if (!username) {
-        res.redirect('/login');
-        return;
-    };
     const orderdetail = JSON.parse(req.body.orderdetail),
         orderID = 'ord' + username + Date.now();
     try {
@@ -115,7 +102,8 @@ module.exports.adding = async (req, res) => {
             };
             await orders.ordering(username, infor);
             req.session.cart = [];
-            res.redirect('/users/readOrder?orderID=' + orderID);
+            const url = '/users/readOrder?orderID=' + orderID;
+            res.redirect(url);
             return;
         }
     } catch (error) {
@@ -130,11 +118,6 @@ module.exports.adding = async (req, res) => {
  * Hủy đơn.
  */
 module.exports.cancel = async (req, res) => {
-    const username = req.user.user;
-    if (!username) {
-        res.redirect('/login');
-        return;
-    };
     const { orderID } = req.body;
     try {
         const order = await orders.finding(orderID);
@@ -208,7 +191,11 @@ module.exports.listing = async (req, res) => {
 module.exports.finding = async (req, res) => {
     const { infor } = req.query;
     if(infor === ""){
-        res.redirect('/admin/orders');
+        if(req.user.auth === "admin"){
+            res.redirect('/admin/orders');
+        } else {
+            res.redirect('/users/myOrders');
+        }
     }
     try {
         const listFind = await orders.finding(infor);

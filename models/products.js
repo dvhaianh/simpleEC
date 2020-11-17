@@ -1,6 +1,3 @@
-/**
- * Modules.
- */
 const mongoose = require('mongoose');
 
 /**
@@ -30,9 +27,6 @@ const PRODUCT = new mongoose.Schema({
     }
 });
 
-/**
- * Model.
- */
 const products = mongoose.model('products', PRODUCT, 'products');
 
 /**
@@ -53,10 +47,12 @@ module.exports.listing = () => {
  */
 module.exports.finding = input => {
     return products
-        .find({$or: [
-            {productID: input},
-            {productName: input}
-        ]})
+        .find({
+            $or: [
+                {productID: input},
+                {productName: input}
+            ]
+        })
         .then(doc => {
             if(doc.length > 0) return doc;
         });

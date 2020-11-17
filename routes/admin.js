@@ -1,13 +1,20 @@
 const router = require('express').Router();
 
+/**
+ * Middlewares.
+ */
+const validation = require('../middlewares/validation');
+
+/**
+ * Controllers.
+ */
 const accs = require('../controllers/accounts');
 const products = require('../controllers/products');
 const orders = require('../controllers/orders');
 
-const validation = require('../middlewares/validation');
 
 /**
- * Chuyển sang trang chủ cho admin.
+ * Chuyển sang trang chủ của admin.
  */
 router.get('/', (req, res) => {
     res.render('admin/index');

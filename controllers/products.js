@@ -99,8 +99,8 @@ module.exports.adding = async (req, res) => {
             return;
         } else {
             await products.adding(infor);
-            const product = await products.finding(infor.productID);
-            res.redirect('/admin/products/find?infor=' + productID);
+            const url = '/admin/products/find?infor=' + productID;
+            res.redirect(url);
             return;
         }
     } catch (error) {
